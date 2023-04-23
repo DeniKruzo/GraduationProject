@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Главная";
+}
+<style class="body">
+    body{
+        background-image: url('../image/FirstImage.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #ff5400;
+    }
+
+    .UpText{
+        background-color: #2b4547;
+        
+        
+    }
+
+   
+</style>
+
+<div class="text-center">
+    <h4 class="UpText">Приветствую</h4>
+    <h4 class="UpText">на лучшей фриланс площадке!</h4>
+    <h4 class="UpText">Здесь вы можете найти как своего специалиста, так и стать им, либо же просто разместить задание, заполнив нужную форму, и ждать заявок на нашем сайте.</h4>
+    
+    <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Login">Выбрать исполнителя</a>
+    <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Register">Стать исполнителем</a>
+</div>
