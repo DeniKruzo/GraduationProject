@@ -13,6 +13,11 @@
         <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
         <nav>
             <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Home" asp-action="About">Разместить задание</a>
+            @if(User.IsInRole("admin"))
+            {
+                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Roles" asp-action="Index">Роли</a>
+            }
+            
         </nav>
         <div>
             <partial name="_LoginPartial.cshtml" />
