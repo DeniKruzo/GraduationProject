@@ -10,6 +10,7 @@ builder.Services.AddDbContext<GraduationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GraduationDbContext>();
 
 // Add services to the container.

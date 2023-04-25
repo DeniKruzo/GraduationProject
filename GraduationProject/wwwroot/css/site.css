@@ -5,19 +5,22 @@ body {
     font-family: Antiqua;
 }
 
-header{
+header {
     padding: 15px 10%;
     color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     background: #333;
     border-bottom: 2px solid #0000;
 }
 
-header .logo{
+header .logo {
     font-weight: 600;
     font-size: 25px;
+    color: #fff;
+    text-decoration: none;
+    background: #333;
 }
 
 header nav a {

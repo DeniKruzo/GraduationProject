@@ -10,13 +10,10 @@
 </head>
 <body>
     <header>
-        <span class="logo">YourFreelancer</span>
-        <div>
-             <nav>
-                <a type="button" class="" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
-                <a type="button" class="" asp-area="" asp-controller="Home" asp-action="About">О Нас</a>
-            </nav>
-        </div>
+        <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
+        <nav>
+            <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Home" asp-action="About">Разместить задание</a>
+        </nav>
         <div>
             <partial name="_LoginPartial.cshtml" />
         </div>
