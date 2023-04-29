@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+    
+
 }
 
 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -26,10 +28,8 @@
         </div>
     </div>
     <div class="mb-3">
-        <select class="form-select">
-            <option disabled>Выбор роли</option>
-            <option> Исполнитель</option>
-            <option> Заказчик</option>
+        <select asp-for="Input.ConfirmRole" asp-items="@Model.SetRoles" class="form-select">
+            <option value=""></option>
         </select>
     </div>
     <div class="form-floating">

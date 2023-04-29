@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Data;
+using GraduationProject.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GraduationProject.Areas.Identity.Pages.Account
 {
@@ -44,7 +47,11 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+          
         }
+
+        public SelectList SetRoles { get; set; }
+       
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -52,6 +59,7 @@ namespace GraduationProject.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -107,29 +115,47 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
 
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Роль")]
+            public string ConfirmRole { get; set; }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            //вообще бы брать из бд и сделать проверочку на отсутсвие!!!
+            var roles = new List<string>()
+            {
+                "customer", "specialist"
+            };
+            SetRoles = new SelectList(roles);
+           
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+         
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
                 user.FirstName = Input.FirstName; 
                 user.LastName = Input.LastName;
+                
+               
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                //Проверка на бд???
+                await _userManager.AddToRoleAsync(user, Input.ConfirmRole);
 
                 if (result.Succeeded)
                 {
@@ -190,4 +216,6 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
+
+ 
 }
