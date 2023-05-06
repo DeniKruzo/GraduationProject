@@ -4,6 +4,7 @@ using GraduationProject.Data;
 using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Abstract;
 using GraduationProject.mocks;
+using GraduationProject.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("GraduationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'GraduationDbContextConnection' not found.");
@@ -20,8 +21,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddTransient<IAllOrders,MockOrders>();
-builder.Services.AddTransient<IOrderCategory, MockCategory>();
+//подключаем репу через синглтон
+builder.Services.AddTransient<IAllOrders,OrderRepository>();
+builder.Services.AddTransient<IOrderCategory, CategoryOfOrderRepository>();
 
 var app = builder.Build();
 
@@ -45,5 +47,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<GraduationDbContext>();
+    //заполнили тестовыми данными бд
+    DataHelper.Seed(context);
+}
+
 
 app.Run();
