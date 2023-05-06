@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using System.Data;
 using GraduationProject.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GraduationProject.Areas.Identity.Pages.Account
 {
@@ -33,13 +34,15 @@ namespace GraduationProject.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly GraduationDbContext _context;
+       
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, GraduationDbContext Context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -47,7 +50,7 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-          
+            _context = Context;
         }
 
         public SelectList SetRoles { get; set; }
@@ -127,13 +130,10 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            //вообще бы брать из бд и сделать проверочку на отсутсвие!!!
-            var roles = new List<string>()
-            {
-                "customer", "specialist"
-            };
+          
+            var roles = _context.Roles.ToList();
+            roles.RemoveAll (r => r.Name == "admin");
             SetRoles = new SelectList(roles);
-           
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -147,19 +147,17 @@ namespace GraduationProject.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName; 
                 user.LastName = Input.LastName;
-                
-               
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                //Проверка на бд???
-                await _userManager.AddToRoleAsync(user, Input.ConfirmRole);
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Если нет ролей в бд - ТО СОЗДАТЬ первую роль - АДМИНИСТРАТОР - admin
+                    await _userManager.AddToRoleAsync(user, Input.ConfirmRole);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

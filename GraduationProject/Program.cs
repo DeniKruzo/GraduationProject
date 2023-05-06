@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using GraduationProject.Data;
 using GraduationProject.Areas.Identity.Data;
+using GraduationProject.Abstract;
+using GraduationProject.mocks;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("GraduationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'GraduationDbContextConnection' not found.");
@@ -17,6 +19,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IAllOrders,MockOrders>();
+builder.Services.AddTransient<IOrderCategory, MockCategory>();
 
 var app = builder.Build();
 

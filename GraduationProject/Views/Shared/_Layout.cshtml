@@ -10,20 +10,26 @@
 </head>
 <body>
     <header>
-        <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
-        <nav>
-            <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Home" asp-action="About">Разместить задание</a>
-            @if(User.IsInRole("admin"))
-            {
-                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Roles" asp-action="Index">Роли</a>
-            }
-            
-        </nav>
-        <div>
+        <div >
+            <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
+            <nav>
+                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Home" asp-action="About">Разместить задание</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="OrdersList">Заказы</a>
+                }
+                @if (User.IsInRole("admin"))
+                {
+                    <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Roles" asp-action="Index">Роли</a>
+                }
+
+            </nav>
+        </div>
+        <div class="userPlace">
             <partial name="_LoginPartial.cshtml" />
         </div>
     </header>
-    <div class="container">
+    <div class="container mt-5">
         <main role="main">
             @RenderBody()
         </main>

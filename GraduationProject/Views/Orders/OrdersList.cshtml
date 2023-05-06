@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Заказы";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.orderCategory</h1>
+
+<div class="row mt-5 mb-2">
+    @{
+        foreach(var order in Model.getAllOrders)
+        {
+            <div class="card">
+                <h5 class="card-header">@order.Name</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Дедлайн - @order.DeadLine.ToString("dd.MM.yyyy")</h5>
+                    <p class="card-text">@order.ShortDesc.</p>
+                    <a href="#" class="btn btn-primary">Смотреть подробности</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted"> Бюджет - @order.Price</small>
+                </div>
+            </div>
+        }
+    }
+</div>
