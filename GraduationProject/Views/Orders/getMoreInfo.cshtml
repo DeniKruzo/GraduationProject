@@ -1,0 +1,20 @@
+﻿@using GraduationProject.Models.ViewModel
+@model OrdersListViewModel
+@{
+    ViewData["Title"] = "Описание заказа";
+}
+
+<h1>Аллоха!</h1>
+<a href="" type="button" class="btn-warning">Написать заказчику</a>
+<div class="row mt-5 mb-2">
+    @{
+        foreach (var order in Model.getAllOrders)
+        {
+            <div class="card mb-2">
+                <h5 class="card-header">@order.Name</h5>
+                <h5 class="card-header">@order.Price</h5>
+                <h5 class="card-header">@order.LongDesc</h5>
+            </div>
+        }
+    }
+</div>
