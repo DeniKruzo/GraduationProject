@@ -13,7 +13,7 @@
         <div >
             <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
             <nav>
-                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Home" asp-action="About">Разместить задание</a>
+                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="AddNewOrder">Разместить задание</a>
                 @if (User.Identity.IsAuthenticated)
                 {
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="OrdersList">Заказы</a>

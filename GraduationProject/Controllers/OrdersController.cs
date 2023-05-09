@@ -1,5 +1,7 @@
 ﻿using GraduationProject.Abstract;
+using GraduationProject.Data;
 using GraduationProject.Domains;
+using GraduationProject.Models;
 using GraduationProject.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +11,13 @@ namespace GraduationProject.Controllers
     {
         private readonly IAllOrders _allOrders;
         private readonly IOrderCategory _orderCategory;
+        private GraduationDbContext _context;
 
-        public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory)
+        public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context)
         {
             _allOrders = allOrders;
             _orderCategory = orderCategory;
+            _context = context;
         }
 
         [Route("Orders/ordersList")]
@@ -58,6 +62,39 @@ namespace GraduationProject.Controllers
                 
             };
             return View(ordObj);
+        }
+
+        [HttpGet]
+        public IActionResult AddNewOrder()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddNewOrder(openOrder model)
+        {
+            var category = _context.CategoryOrder.First();
+
+            var order = new openOrder
+            {
+                Name = model.Name,
+                ShortDesc = model.ShortDesc,
+                LongDesc = model.LongDesc,
+                Img = "default.jpg",
+                Price = model.Price,
+                DeadLine = model.DeadLine,
+                CustomerId = "customerID",
+                isOpen = true,
+                CategoryOrder = category
+            };
+
+            _context.Orders.Add(order);
+
+            _context.SaveChanges();
+
+            
+
+            return RedirectToAction("AddNewOrder", "Orders");
         }
     }
 

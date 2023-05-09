@@ -1,6 +1,7 @@
 ﻿using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.Xml;
 
@@ -14,6 +15,7 @@ namespace GraduationProject.Domains
     /// </summary>
     public class openOrder
     {
+        [BindNever]
         [Key]
         public long OrderId { get; set; }
 
