@@ -36,7 +36,8 @@ namespace GraduationProject.Domains
 
         [Display(Name = "Категория")]
         public int CategoryID { get; set; }
-        
+
+        [Display(Name = "Категория")]
         public virtual CategoryOrder CategoryOrder { get; set; }
 
         [Display(Name = "Актуальность")]

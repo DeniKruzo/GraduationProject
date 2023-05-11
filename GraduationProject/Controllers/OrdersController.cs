@@ -1,9 +1,13 @@
 ﻿using GraduationProject.Abstract;
+using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Data;
 using GraduationProject.Domains;
 using GraduationProject.Models;
 using GraduationProject.Models.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace GraduationProject.Controllers
 {
@@ -12,12 +16,18 @@ namespace GraduationProject.Controllers
         private readonly IAllOrders _allOrders;
         private readonly IOrderCategory _orderCategory;
         private GraduationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context)
+
+        public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context,
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _allOrders = allOrders;
             _orderCategory = orderCategory;
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [Route("Orders/ordersList")]
@@ -64,17 +74,24 @@ namespace GraduationProject.Controllers
             return View(ordObj);
         }
 
+
+        public SelectList category { get; set; }
+
         [HttpGet]
         public IActionResult AddNewOrder()
         {
-            return View();
+            category = new SelectList(_context.CategoryOrder.Select(n => n.Name).ToList());
+            var upModel = new UpdateOrdersModel
+            {
+                SelectedCat = category,
+                DeadLine = DateTime.UtcNow
+            };
+            return View(upModel);
         }
-
+         
         [HttpPost]
-        public IActionResult AddNewOrder(openOrder model)
+        public IActionResult AddNewOrder(UpdateOrdersModel model)
         {
-            var category = _context.CategoryOrder.First();
-
             var order = new openOrder
             {
                 Name = model.Name,
@@ -83,18 +100,16 @@ namespace GraduationProject.Controllers
                 Img = "default.jpg",
                 Price = model.Price,
                 DeadLine = model.DeadLine,
-                CustomerId = "customerID",
+                CustomerId = _userManager.GetUserId(User),
                 isOpen = true,
-                CategoryOrder = category
+                CategoryOrder = _context.CategoryOrder.First(c=>c.Name == model.GetOrderName)
             };
 
             _context.Orders.Add(order);
 
             _context.SaveChanges();
 
-            
-
-            return RedirectToAction("AddNewOrder", "Orders");
+            return RedirectToAction("OrdersList", "Orders");
         }
     }
 

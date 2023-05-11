@@ -13,43 +13,44 @@ namespace GraduationProject.Data
         /// <param name="app"></param>
         public static void Seed(GraduationDbContext context)
         {
-            if (!context.CategoryOrder.Any())
-                context.CategoryOrder.AddRange(Categories.Select(c => c.Value));
+            //if (!context.CategoryOrder.Any())
+            //    context.CategoryOrder.AddRange(Categories.Select(c => c.Value));
 
-            if (!context.Orders.Any())
-            {
-                context.AddRange(
-                    new openOrder
-                    {
-                        Name = "Тестовое название",
-                        ShortDesc = "Короткое описание",
-                        LongDesc = "Длинное описание",
-                        Img = "Картинка по умолчанию",
-                        Price = 1,
-                        isOpen = true,
-                        CustomerId = "ID заказчика",
-                        DeadLine = DateTime.Now.Date,
-                        CategoryOrder = category["Программирование"]
-                    },
-                    new openOrder
-                    {
-                        Name = "Тестовое название 2",
-                        ShortDesc = "Короткое описание",
-                        LongDesc = "Длинное описание",
-                        Img = "Картинка по умолчанию",
-                        Price = 2,
-                        isOpen = true,
-                        CustomerId = "ID заказчика",
-                        DeadLine = DateTime.Now.Date,
-                        CategoryOrder = category["Дизайн"]
-                    }
-                    );
-            }
+            //if (!context.Orders.Any())
+            //{
+            //    context.AddRange(
+            //        new openOrder
+            //        {
+            //            Name = "Тестовое название",
+            //            ShortDesc = "Короткое описание",
+            //            LongDesc = "Длинное описание",
+            //            Img = "Картинка по умолчанию",
+            //            Price = 1,
+            //            isOpen = true,
+            //            CustomerId = "ID заказчика",
+            //            DeadLine = DateTime.Now.Date,
+            //            CategoryOrder = category["Программирование"]
+            //        },
+            //        new openOrder
+            //        {
+            //            Name = "Тестовое название 2",
+            //            ShortDesc = "Короткое описание",
+            //            LongDesc = "Длинное описание",
+            //            Img = "Картинка по умолчанию",
+            //            Price = 2,
+            //            isOpen = true,
+            //            CustomerId = "ID заказчика",
+            //            DeadLine = DateTime.Now.Date,
+            //            CategoryOrder = category["Дизайн"]
+            //        }
+            //        );
+            //}
 
 
 
             context.SaveChanges();
         }
+
         private static Dictionary<string, CategoryOrder> category;
         public static Dictionary<string,CategoryOrder> Categories
         {
