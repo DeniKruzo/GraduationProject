@@ -20,16 +20,18 @@ namespace GraduationProject.Controllers
         private GraduationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private IWebHostEnvironment _appEnvironment;
 
 
         public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment appEnvironment)
         {
             _allOrders = allOrders;
             _orderCategory = orderCategory;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _appEnvironment = appEnvironment;
         }
 
         [Route("Orders/ordersList")]
@@ -91,21 +93,23 @@ namespace GraduationProject.Controllers
             var upModel = new UpdateOrdersModel
             {
                 SelectedCat = category,
-                DeadLine = DateTime.UtcNow
+                DeadLine = DateTime.UtcNow,
+                
             };
             return View(upModel);
         }
          
         [HttpPost]
         [Authorize(Roles = "customer")]
-        public IActionResult AddNewOrder(UpdateOrdersModel model)
+        public IActionResult AddNewOrder(UpdateOrdersModel model, IFormFile uploadedFile)
         {
+
             var order = new openOrder
             {
                 Name = model.Name,
                 ShortDesc = model.ShortDesc,
                 LongDesc = model.LongDesc,
-                Img = "default.jpg",
+                Img = AddFile(model.formFile),
                 Price = model.Price,
                 DeadLine = model.DeadLine,
                 CustomerId = _userManager.GetUserId(User),
@@ -119,6 +123,15 @@ namespace GraduationProject.Controllers
 
             return RedirectToAction("OrdersList", "Orders");
         }
+
+        [HttpPost]
+        public string AddFile(IFormFile uploadedFile)
+        {
+            string fileName = uploadedFile.FileName;
+
+            return fileName;
+        }
+
     }
 
     

@@ -13,7 +13,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" asp-action="AddNewOrder">
+        <form method="post" asp-action="AddNewOrder" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -30,8 +30,10 @@
                 <input asp-for="LongDesc" class="form-control" />
                 <span asp-validation-for="LongDesc" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                выбор картинки
+            <div class="form-group" method="post" enctype="multipart/form-data">
+                <label asp-for="formFile" class="control-label"></label>
+                <input asp-for="formFile" class="form-control" name="formFile" accept=".jpg,.png,.jpeg"/>
+                <span asp-validation-for="formFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
