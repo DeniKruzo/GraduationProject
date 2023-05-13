@@ -1,0 +1,17 @@
+﻿@model openOrder
+@using GraduationProject.Domains
+
+@{
+    <div class="card mb-2">
+        <h5 class="card-header">@Model.Name</h5>
+        <div class="card-body">
+            <h5 class="card-title">Дедлайн - @Model.DeadLine.ToString("dd.MM.yyyy")</h5>
+            <p class="card-text">@Model.ShortDesc.</p>
+            <a class="btn btn-primary" asp-controller="Orders" asp-action="getMoreInfo" asp-route-id="@Model.OrderId">Смотреть подробности</a>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted"> Бюджет - @Model.Price</small>
+        </div>
+    </div>
+}
+

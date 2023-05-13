@@ -4,10 +4,12 @@ using GraduationProject.Data;
 using GraduationProject.Domains;
 using GraduationProject.Models;
 using GraduationProject.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Data;
 
 namespace GraduationProject.Controllers
 {
@@ -35,8 +37,12 @@ namespace GraduationProject.Controllers
         public IActionResult OrdersList(string category)
         {
             string _category = category;
-            IEnumerable<openOrder> openOrders = null;
+            IQueryable<openOrder> openOrders = null;
             string currCategory = "";
+
+            //рефакторинг тернарным оператором
+            //openOrders = category == null ? openOrders = _allOrders.Orders : openOrders = _allOrders.Orders.Where(i => i.CategoryOrder.Name.Equals(category.ToString()));
+
             if (string.IsNullOrEmpty(category))
             {
                 openOrders = _allOrders.Orders;
@@ -45,35 +51,36 @@ namespace GraduationProject.Controllers
             {
                 if(string.Equals(category.ToString(),category,StringComparison.OrdinalIgnoreCase))
                 {
-                    openOrders = _allOrders.Orders.Where(i => i.CategoryOrder.Name.Equals(category.ToString()));
+                    openOrders = _allOrders
+                        .Orders
+                        .Where(i => i.CategoryOrder.Name.Equals(category.ToString()));
                 }
 
                 currCategory = _category;
-
               
             }
-            var ordObj = new OrdersListViewModel
+            var modelForOrders = new OrdersListViewModel
             {
                 getAllOrders = openOrders,
                 orderCategory = currCategory
             };
 
-
-            return View(ordObj);
+            return View(modelForOrders);
         }
 
         [Route("Orders/getMoreInfo/{id:int}")]
         public IActionResult getMoreInfo(int id)
         {
-            var moreInfo = _allOrders.Orders.Where(i => i.OrderId == id);
-            var ordObj = new OrdersListViewModel
+            var moreInfo = _allOrders.Orders
+                .Where(i => i.OrderId == id);
+
+            var modelForSelectOrder = new OrdersListViewModel
             {
                 getAllOrders = moreInfo,
                 
             };
-            return View(ordObj);
+            return View(modelForSelectOrder);
         }
-
 
         public SelectList category { get; set; }
 
@@ -90,6 +97,7 @@ namespace GraduationProject.Controllers
         }
          
         [HttpPost]
+        [Authorize(Roles = "customer")]
         public IActionResult AddNewOrder(UpdateOrdersModel model)
         {
             var order = new openOrder

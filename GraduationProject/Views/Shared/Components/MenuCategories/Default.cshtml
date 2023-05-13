@@ -1,0 +1,15 @@
+﻿@model List<string>
+
+@foreach(var c in Model)
+{
+    <div class="row mb-2">
+        <a asp-controller="Orders" asp-action="OrdersList" type="button"
+       asp-route-category="@c"
+       class="btn btn-outline-primary">
+            @c
+        </a>
+    </div>
+}
+
+
+

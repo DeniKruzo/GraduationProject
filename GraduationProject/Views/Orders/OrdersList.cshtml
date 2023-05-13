@@ -9,20 +9,15 @@
 
 
 <div class="row mt-5 mb-2">
-    @{
-        foreach(var order in Model.getAllOrders)
-        {
-            <div class="card mb-2">
-                <h5 class="card-header">@order.Name</h5>
-                <div class="card-body">
-                    <h5 class="card-title">Дедлайн - @order.DeadLine.ToString("dd.MM.yyyy")</h5>
-                    <p class="card-text">@order.ShortDesc.</p>
-                    <a class="btn btn-primary" asp-controller="Orders" asp-action="getMoreInfo" asp-route-id="@order.OrderId">Смотреть подробности</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted"> Бюджет - @order.Price</small>
-                </div>
-            </div>
+    <div class="col-3">
+        @await Component.InvokeAsync("MenuCategories")
+    </div>
+    <div class="col-9">
+        @{
+            foreach (var order in Model.getAllOrders)
+            {
+                @Html.Partial("OrderView", order)
+            }
         }
-    }
+    </div>
 </div>
