@@ -9,7 +9,7 @@ namespace GraduationProject.Controllers
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
-        RoleManager<IdentityRole> _roleManager;
+        private RoleManager<IdentityRole> _roleManager;
         
         public RolesController(RoleManager<IdentityRole> roleManager)
         {

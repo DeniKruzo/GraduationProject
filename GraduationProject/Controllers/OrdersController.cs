@@ -20,7 +20,7 @@ namespace GraduationProject.Controllers
         private GraduationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private IWebHostEnvironment _appEnvironment;
+        private readonly IWebHostEnvironment _appEnvironment;
 
 
         public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context,
@@ -70,8 +70,20 @@ namespace GraduationProject.Controllers
             return View(modelForOrders);
         }
 
+        [Route("Orders/MyOrdersList")]
+        public IActionResult MyOrdersList()
+        {
+            var userId = _userManager.GetUserId(User);
+            var myList = _allOrders.Orders.Where(o => o.CustomerId == userId);
+            var model = new OrdersListViewModel
+            {
+                getAllOrders = myList,
+            };
+            return View(model);
+        }
+
         [Route("Orders/getMoreInfo/{id:int}")]
-        public IActionResult getMoreInfo(int id)
+        public IActionResult GetMoreInfo(int id)
         {
             var moreInfo = _allOrders.Orders
                 .Where(i => i.OrderId == id);
@@ -101,7 +113,7 @@ namespace GraduationProject.Controllers
          
         [HttpPost]
         [Authorize(Roles = "customer")]
-        public IActionResult AddNewOrder(UpdateOrdersModel model, IFormFile uploadedFile)
+        public IActionResult AddNewOrder(UpdateOrdersModel model)
         {
 
             var order = new openOrder
@@ -121,17 +133,34 @@ namespace GraduationProject.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("OrdersList", "Orders");
+            return RedirectToAction("MyOrdersList", "Orders");
         }
 
         [HttpPost]
         public string AddFile(IFormFile uploadedFile)
         {
+            string ImgName = "default";
             string fileName = uploadedFile.FileName;
 
-            return fileName;
-        }
+            if (uploadedFile != null)
+            {
+                string path = _appEnvironment.WebRootPath;
+                string extension = Path.GetExtension(fileName);
+                string name =Path.GetFileNameWithoutExtension(fileName);
+                string uniqName = Guid.NewGuid().ToString();
 
+                ImgName = $"{name}_{uniqName}{extension}";
+
+                string pathToImg = Path.Combine(path, "image", ImgName);
+
+                using (var fs = new FileStream(pathToImg, FileMode.Create))
+                {
+                    uploadedFile.CopyTo(fs);
+                }
+            }
+
+            return ImgName;
+        }
     }
 
     

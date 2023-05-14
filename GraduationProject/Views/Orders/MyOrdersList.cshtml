@@ -1,0 +1,16 @@
+﻿@using GraduationProject.Models.ViewModel
+@model OrdersListViewModel
+@{
+    ViewData["Title"] = "Мои Заказы";
+}
+<h1>Мои Заказы</h1>
+
+<div>
+    <hr />
+    @{
+        foreach (var order in Model.getAllOrders)
+        {
+            @Html.Partial("OrderView", order)
+        }
+    }
+</div>
