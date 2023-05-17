@@ -4,18 +4,41 @@
     ViewData["Title"] = "Описание заказа";
 }
 
-<h1>Аллоха!</h1>
-<a href="" type="button" class="btn-warning">Написать заказчику</a>
-<div class="row mt-5 mb-2">
+<div >
     @{
         foreach (var order in Model.getAllOrders)
         {
-            <div class="card mb-2">
-                <h5 class="card-header">@order.Name</h5>
-                <h5 class="card-header">@order.Price</h5>
-                <h5 class="card-header">@order.LongDesc</h5>
-                <img src="~/image/@order.Img"/>
+            <div class="row">
+                <div class="col-xs-12 col-md-8 text-center-xs text-center-sm">
+                    <h1 class="m-b-0" style="line-height: 40px;"><span class="offer-hot-icon icon-lg"></span>@order.Name</h1>
+                </div>
+                <div class="col-xs-12 col-md-4 text-center-xs text-center-sm text-right-md text-right-lg">
+                    <h2 class="m-b-0" style="line-height: 32px; font-size: 3rem;">
+                        <strong class="text-brand" title="Работа">
+                            Бюджет - @order.Price.ToString("C")
+                        </strong>
+                        <hr />
+                        <small class="text-brand" title="Срок выполнения:">
+                            Дедлайн - @order.DeadLine.ToString("dd.MM")
+                        </small>
+                    </h2>
+                </div>
+                <hr />
+                <a href="" type="button" class="btn btn-primary btn-lg btn-block">Написать заказчику</a>
             </div>
+            <hr />
+            <div class="col-xs-12">
+                Полное описание заказа:
+                @order.LongDesc
+            </div>
+            <hr />
+            <div>
+                <div>
+                    <img src="" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+            <hr />
+            <a asp-area="" asp-controller="Orders" asp-action="MyOrdersList" type="button" class="btn btn-outline-danger">Назад</a>
         }
     }
 </div>

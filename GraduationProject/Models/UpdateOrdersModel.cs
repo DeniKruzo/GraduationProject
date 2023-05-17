@@ -17,6 +17,26 @@ namespace GraduationProject.Models
 
         [Display(Name = "Картинка(по желанию)")]
         public IFormFile formFile { get; set; }
+
+        public UpdateOrdersModel()
+        {
+
+        }
+
+        public UpdateOrdersModel(openOrder entity)
+        {
+            OrderId = entity.OrderId;
+            Name = entity.Name;
+            ShortDesc = entity.ShortDesc;
+            LongDesc = entity.LongDesc;
+            Img = entity.Img;
+            Price = entity.Price;
+            CategoryID = entity.CategoryID;
+            CategoryOrder = entity.CategoryOrder;
+            isOpen = entity.isOpen;
+            CustomerId = entity.CustomerId;
+            DeadLine = entity.DeadLine;
+        }
       
     }
 }

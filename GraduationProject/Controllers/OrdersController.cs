@@ -36,6 +36,7 @@ namespace GraduationProject.Controllers
 
         [Route("Orders/ordersList")]
         [Route("Orders/ordersList/{category}")]
+        [Authorize(Roles = "specialist")]
         public IActionResult OrdersList(string category)
         {
             string _category = category;
@@ -71,6 +72,7 @@ namespace GraduationProject.Controllers
         }
 
         [Route("Orders/MyOrdersList")]
+        [Authorize(Roles = "customer")]
         public IActionResult MyOrdersList()
         {
             var userId = _userManager.GetUserId(User);
@@ -99,6 +101,7 @@ namespace GraduationProject.Controllers
         public SelectList category { get; set; }
 
         [HttpGet]
+        [Authorize(Roles = "customer")]
         public IActionResult AddNewOrder()
         {
             category = new SelectList(_context.CategoryOrder.Select(n => n.Name).ToList());
@@ -160,6 +163,17 @@ namespace GraduationProject.Controllers
             }
 
             return ImgName;
+        }
+
+        [Authorize(Roles = "customer")]
+        public IActionResult EditOrder(int id)
+        {
+            var orderForEdit = _context.Orders
+                .FirstOrDefault(i => i.OrderId == id);
+
+            if (orderForEdit == null) return View("Error");
+
+            return View(new UpdateOrdersModel(orderForEdit));
         }
     }
 
