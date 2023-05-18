@@ -11,11 +11,7 @@
 
     .UpText{
         background-color: ghostwhite;
-        
-        
     }
-
-   
 </style>
 
 <div class="text-center UpText">
@@ -24,6 +20,9 @@
     <h2>Здесь вы можете найти как своего специалиста, так и стать им, либо же просто разместить задание,  заполнив нужную форму, и ждать заявок на нашем сайте.</h2>
 </div>
 <div class="text-center">
-    <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Login">Выбрать исполнителя</a>
-    <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Register">Стать исполнителем</a>
+    @if(!SignInManager.IsSignedIn(User))
+    {
+        <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Login">Выбрать исполнителя</a>
+        <a type="button" class="btn btn-warning" asp-area="Identity" asp-page="/Account/Register">Стать исполнителем</a>
+    }
 </div>

@@ -7,7 +7,6 @@ using System.Xml;
 
 namespace GraduationProject.Domains
 {
-
     /// <summary>
     /// Предметная область для Заданий на сайте
     /// На сайте будут выдываться открытые задания с временем до

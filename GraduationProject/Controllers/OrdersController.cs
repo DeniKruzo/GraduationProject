@@ -21,7 +21,7 @@ namespace GraduationProject.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IWebHostEnvironment _appEnvironment;
-
+        public SelectList category { get; set; }
 
         public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context,
             UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment appEnvironment)
@@ -32,6 +32,7 @@ namespace GraduationProject.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _appEnvironment = appEnvironment;
+            category = new SelectList(_context.CategoryOrder.Select(n => n.Name).ToList());
         }
 
         [Route("Orders/ordersList")]
@@ -60,7 +61,6 @@ namespace GraduationProject.Controllers
                 }
 
                 currCategory = _category;
-              
             }
             var modelForOrders = new OrdersListViewModel
             {
@@ -98,13 +98,10 @@ namespace GraduationProject.Controllers
             return View(modelForSelectOrder);
         }
 
-        public SelectList category { get; set; }
-
         [HttpGet]
         [Authorize(Roles = "customer")]
         public IActionResult AddNewOrder()
         {
-            category = new SelectList(_context.CategoryOrder.Select(n => n.Name).ToList());
             var upModel = new UpdateOrdersModel
             {
                 SelectedCat = category,
@@ -118,7 +115,6 @@ namespace GraduationProject.Controllers
         [Authorize(Roles = "customer")]
         public IActionResult AddNewOrder(UpdateOrdersModel model)
         {
-
             var order = new openOrder
             {
                 Name = model.Name,
@@ -142,11 +138,11 @@ namespace GraduationProject.Controllers
         [HttpPost]
         public string AddFile(IFormFile uploadedFile)
         {
-            string ImgName = "default";
-            string fileName = uploadedFile.FileName;
+            string ImgName = "default.jpg";
 
             if (uploadedFile != null)
             {
+                string fileName = uploadedFile.FileName;
                 string path = _appEnvironment.WebRootPath;
                 string extension = Path.GetExtension(fileName);
                 string name =Path.GetFileNameWithoutExtension(fileName);
@@ -166,14 +162,28 @@ namespace GraduationProject.Controllers
         }
 
         [Authorize(Roles = "customer")]
-        public IActionResult EditOrder(int id)
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
             var orderForEdit = _context.Orders
                 .FirstOrDefault(i => i.OrderId == id);
 
             if (orderForEdit == null) return View("Error");
 
-            return View(new UpdateOrdersModel(orderForEdit));
+            var model = new UpdateOrdersModel(orderForEdit)
+            {
+                SelectedCat = category
+            };
+            return View(model);
+        }
+
+        [Authorize(Roles = "customer")]
+        [HttpPost]
+        public IActionResult Edit(UpdateOrdersModel model)
+        {
+
+
+            return RedirectToAction("MyOrdersList", "Orders");
         }
     }
 
