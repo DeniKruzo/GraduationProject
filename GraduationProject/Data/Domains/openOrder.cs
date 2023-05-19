@@ -14,7 +14,6 @@ namespace GraduationProject.Domains
     /// </summary>
     public class openOrder
     {
-        [BindNever]
         [Key]
         public long OrderId { get; set; }
 

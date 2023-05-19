@@ -174,6 +174,7 @@ namespace GraduationProject.Controllers
             {
                 SelectedCat = category
             };
+
             return View(model);
         }
 
@@ -181,11 +182,17 @@ namespace GraduationProject.Controllers
         [HttpPost]
         public IActionResult Edit(UpdateOrdersModel model)
         {
+            model.CustomerId = _userManager.GetUserId(User);
+            model.SelectedCat = category;
+            model.Img = AddFile(model.formFile);
+            model.CategoryOrder = _context.CategoryOrder.First(c => c.Name == model.GetOrderName);
+            model.isOpen = true;
+          
+            _context.Orders.Update(model);
 
+            _context.SaveChanges();
 
             return RedirectToAction("MyOrdersList", "Orders");
         }
     }
-
-    
 }
