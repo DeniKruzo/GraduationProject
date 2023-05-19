@@ -17,12 +17,15 @@ namespace GraduationProject.Domains
         [Key]
         public long OrderId { get; set; }
 
+        [Required]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
+        [Required]
         [Display(Name = "Короткое описание")]
         public string ShortDesc { get; set; }
 
+        [Required]
         [Display(Name = "Полное описание")]
         public string LongDesc { get; set; }
 
@@ -30,6 +33,7 @@ namespace GraduationProject.Domains
         public string Img { get; set; }
 
         [Display(Name = "Бюджет")]
+        [Required]
         public ushort Price { get; set; }
 
         [Display(Name = "Категория")]
