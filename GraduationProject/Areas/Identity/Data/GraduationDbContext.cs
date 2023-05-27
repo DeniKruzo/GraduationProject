@@ -1,4 +1,5 @@
 ﻿using GraduationProject.Areas.Identity.Data;
+using GraduationProject.Data.Domains;
 using GraduationProject.Domains;
 using GraduationProject.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,12 @@ public class GraduationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<openOrder> Orders { get; set; }
     public DbSet<CategoryOrder> CategoryOrder { get; set; }
+
+    public DbSet<Specialization> Specialization { get; set; }
+
+    public DbSet<Comment> Comment { get; set; }
+
+    public DbSet<Profile> Profile { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
