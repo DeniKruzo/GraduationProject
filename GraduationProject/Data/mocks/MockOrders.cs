@@ -31,7 +31,7 @@ namespace GraduationProject.mocks
             }
         }.AsQueryable();
 
-        public openOrder GetObjectOrder(int orderId)
+        public openOrder GetObjectOrder(long orderId)
         {
             throw new NotImplementedException();
         }
