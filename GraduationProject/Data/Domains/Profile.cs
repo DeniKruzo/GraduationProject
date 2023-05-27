@@ -39,7 +39,7 @@ namespace GraduationProject.Data.Domains
         //для специализации 1 к м
 
         [Display(Name = "Специализация ид")]
-        public long Spec { get; set; }
+        public long SpecId { get; set; }
 
         [Display(Name = "Специализация")]
         public virtual Specialization SpecProfile { get; set; }

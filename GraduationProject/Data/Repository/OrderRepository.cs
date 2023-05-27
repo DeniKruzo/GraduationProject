@@ -15,6 +15,6 @@ namespace GraduationProject.Data.Repository
 
         public IQueryable<openOrder> Orders => appDbContext.Orders.Include(c => c.CategoryOrder);
 
-        public openOrder GetObjectOrder(int orderId) => appDbContext.Orders.FirstOrDefault(p => p.OrderId == orderId);
+        public openOrder GetObjectOrder(long orderId) => appDbContext.Orders.FirstOrDefault(p => p.OrderId == orderId);
     }
 }

@@ -24,6 +24,9 @@ builder.Services.AddRazorPages();
 //подключаем репу через синглтон
 builder.Services.AddTransient<IAllOrders,OrderRepository>();
 builder.Services.AddTransient<IOrderCategory, CategoryOfOrderRepository>();
+builder.Services.AddTransient<IGetProfiles, ProfileRepository>();
+builder.Services.AddTransient<IHaveSpecialization, SpecializationRepository>();
+builder.Services.AddTransient<IViewComments, CommentRepository>();
 
 var app = builder.Build();
 
