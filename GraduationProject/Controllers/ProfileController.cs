@@ -1,9 +1,11 @@
-﻿using GraduationProject.Areas.Identity.Data;
+﻿using GraduationProject.Abstract;
+using GraduationProject.Areas.Identity.Data;
 using GraduationProject.BussinesLogic;
 using GraduationProject.Data;
 using GraduationProject.Data.Domains;
 using GraduationProject.Domains;
 using GraduationProject.Models;
+using GraduationProject.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,8 @@ namespace GraduationProject.Controllers
 {
     public class ProfileController : Controller
     {
+        private readonly IGetProfiles _getProfiles;
+        private readonly IHaveSpecialization _getSpec;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly GraduationDbContext _context;
@@ -22,12 +26,14 @@ namespace GraduationProject.Controllers
 
         public SelectList _specialization { get; set; }
 
-        public ProfileController(GraduationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment appEnvironment)
+        public ProfileController(GraduationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment appEnvironment, IGetProfiles getProfiles, IHaveSpecialization getSpec)
         {
             _userManager = userManager;
             _context = context;
             _specialization = new SelectList(_context.Specialization.Select(n => n.Name).ToList());
             _appEnvironment = appEnvironment;
+            _getProfiles = getProfiles;
+            _getSpec = getSpec;
         }
 
         [HttpGet]
@@ -63,6 +69,17 @@ namespace GraduationProject.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("OrdersList", "Orders");
+        }
+
+        public IActionResult List()
+        {
+            var model = new ProfileListViewModel
+            {
+                getAllProfiles = _getProfiles.Profile,
+                getSpecialization = _getSpec.Specialization,
+                getUsers = _context.Users.ToList()
+            };
+            return View(model);
         }
     }
 }

@@ -35,6 +35,7 @@ namespace GraduationProject.Controllers
             _signInManager = signInManager;
             _appEnvironment = appEnvironment;
             category = new SelectList(_context.CategoryOrder.Select(n => n.Name).ToList());
+            
         }
 
         [Route("Orders/ordersList")]
@@ -67,7 +68,7 @@ namespace GraduationProject.Controllers
             var modelForOrders = new OrdersListViewModel
             {
                 getAllOrders = openOrders,
-                orderCategory = currCategory
+                orderCategory = currCategory,
             };
 
             return View(modelForOrders);

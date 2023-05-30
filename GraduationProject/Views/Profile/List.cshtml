@@ -1,0 +1,30 @@
+﻿@using GraduationProject.Models.ViewModel
+@model ProfileListViewModel
+
+@{
+    ViewData["Title"] = "Профили";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-5 mb-2">
+    
+    <div class="col-9">
+        @{
+            foreach (var profile in Model.getAllProfiles)
+            {
+                foreach (var user in Model.getUsers.Where(n => n.Id == profile.OwnerId))
+                {
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="/image/@profile.AvatarImg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@user.FirstName.ToString()</h5>
+                            <p class="card-text">специализация: @profile.SpecProfile.Name</p>
+                            <p class="card-text">Рейтинг: @profile.Rating</p>
+                            <a href="#" class="btn btn-primary">Связаться</a>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
