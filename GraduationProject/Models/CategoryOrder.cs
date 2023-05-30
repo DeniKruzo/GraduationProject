@@ -6,6 +6,7 @@ namespace GraduationProject.Models
 {
     public class CategoryOrder
     {
+        [Key]
         public int Id { get; set; }
 
         [Display(Name = "Название категории")]

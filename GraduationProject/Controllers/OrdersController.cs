@@ -1,5 +1,6 @@
 ﻿using GraduationProject.Abstract;
 using GraduationProject.Areas.Identity.Data;
+using GraduationProject.BussinesLogic;
 using GraduationProject.Data;
 using GraduationProject.Domains;
 using GraduationProject.Models;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Data;
+using System.Drawing;
 
 namespace GraduationProject.Controllers
 {
@@ -120,7 +122,7 @@ namespace GraduationProject.Controllers
                 Name = model.Name,
                 ShortDesc = model.ShortDesc,
                 LongDesc = model.LongDesc,
-                Img = AddFile(model.formFile),
+                Img = ImageMethods.AddFile(_appEnvironment ,model.formFile),
                 Price = model.Price,
                 DeadLine = model.DeadLine,
                 CustomerId = _userManager.GetUserId(User),
@@ -133,32 +135,6 @@ namespace GraduationProject.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("MyOrdersList", "Orders");
-        }
-
-        [HttpPost]
-        public string AddFile(IFormFile uploadedFile)
-        {
-            string ImgName = "default.jpg";
-
-            if (uploadedFile != null)
-            {
-                string fileName = uploadedFile.FileName;
-                string path = _appEnvironment.WebRootPath;
-                string extension = Path.GetExtension(fileName);
-                string name =Path.GetFileNameWithoutExtension(fileName);
-                string uniqName = Guid.NewGuid().ToString();
-
-                ImgName = $"{name}_{uniqName}{extension}";
-
-                string pathToImg = Path.Combine(path, "image", ImgName);
-
-                using (var fs = new FileStream(pathToImg, FileMode.Create))
-                {
-                    uploadedFile.CopyTo(fs);
-                }
-            }
-
-            return ImgName;
         }
 
         [Authorize(Roles = "customer")]
@@ -184,7 +160,7 @@ namespace GraduationProject.Controllers
         {
             model.CustomerId = _userManager.GetUserId(User);
             model.SelectedCat = category;
-            model.Img = AddFile(model.formFile);
+            model.Img = ImageMethods.AddFile(_appEnvironment, model.formFile);
             model.CategoryOrder = _context.CategoryOrder.First(c => c.Name == model.GetOrderName);
             model.isOpen = true;
           

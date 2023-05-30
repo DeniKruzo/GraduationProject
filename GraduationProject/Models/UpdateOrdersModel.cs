@@ -3,6 +3,7 @@ using GraduationProject.Domains;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace GraduationProject.Models
@@ -16,6 +17,7 @@ namespace GraduationProject.Models
         public openOrder openOrder { get; set; }
 
         [Display(Name = "Картинка(по желанию)")]
+        [NotMapped]
         public IFormFile formFile { get; set; }
 
         public UpdateOrdersModel()

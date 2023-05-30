@@ -1,5 +1,6 @@
 ﻿using GraduationProject.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GraduationProject.Data.Domains
 {
@@ -45,7 +46,6 @@ namespace GraduationProject.Data.Domains
         public virtual Specialization SpecProfile { get; set; }
 
         //для отзывов м к 1
-
         public List<Comment> Comments { get; set; }
     }
 }
