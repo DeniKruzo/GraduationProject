@@ -11,7 +11,7 @@ namespace GraduationProject.Data.Domains
 
         public string OwnerId { get; set; }
 
-        public long ProfileId { get; set; }
+        public long IdProfile { get; set; }
 
         public virtual Profile Profiles { get; set; }
 

@@ -103,6 +103,9 @@ namespace GraduationProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CommentId"), 1L, 1);
 
+                    b.Property<long>("IdProfile")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsPositive")
                         .HasColumnType("bit");
 
@@ -110,7 +113,7 @@ namespace GraduationProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ProfileId")
+                    b.Property<long>("ProfilesProfileId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Text")
@@ -119,7 +122,7 @@ namespace GraduationProject.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("ProfilesProfileId");
 
                     b.ToTable("Comment");
                 });
@@ -415,7 +418,7 @@ namespace GraduationProject.Migrations
                 {
                     b.HasOne("GraduationProject.Data.Domains.Profile", "Profiles")
                         .WithMany("Comments")
-                        .HasForeignKey("ProfileId")
+                        .HasForeignKey("ProfilesProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

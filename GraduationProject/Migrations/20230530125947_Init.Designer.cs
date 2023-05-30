@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraduationProject.Migrations
 {
     [DbContext(typeof(GraduationDbContext))]
-    [Migration("20230506133434_NewTables")]
-    partial class NewTables
+    [Migration("20230530125947_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,110 @@ namespace GraduationProject.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Comment", b =>
+                {
+                    b.Property<long>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CommentId"), 1L, 1);
+
+                    b.Property<long>("IdProfile")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsPositive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProfilesProfileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ProfilesProfileId");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Profile", b =>
+                {
+                    b.Property<long>("ProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ProfileId"), 1L, 1);
+
+                    b.Property<string>("AboutMe")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AvatarImg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSafeDeal")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastVisit")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("Rating")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Services")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("SpecId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SpecProfileSpecializationId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ProfileId");
+
+                    b.HasIndex("SpecProfileSpecializationId");
+
+                    b.ToTable("Profile");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Profile");
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Specialization", b =>
+                {
+                    b.Property<long>("SpecializationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("SpecializationId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SpecializationId");
+
+                    b.ToTable("Specialization");
                 });
 
             modelBuilder.Entity("GraduationProject.Domains.openOrder", b =>
@@ -305,6 +409,35 @@ namespace GraduationProject.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GraduationProject.Models.UpdateProfileModel", b =>
+                {
+                    b.HasBaseType("GraduationProject.Data.Domains.Profile");
+
+                    b.HasDiscriminator().HasValue("UpdateProfileModel");
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Comment", b =>
+                {
+                    b.HasOne("GraduationProject.Data.Domains.Profile", "Profiles")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProfilesProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profiles");
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Profile", b =>
+                {
+                    b.HasOne("GraduationProject.Data.Domains.Specialization", "SpecProfile")
+                        .WithMany("Profiles")
+                        .HasForeignKey("SpecProfileSpecializationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SpecProfile");
+                });
+
             modelBuilder.Entity("GraduationProject.Domains.openOrder", b =>
                 {
                     b.HasOne("GraduationProject.Models.CategoryOrder", "CategoryOrder")
@@ -365,6 +498,16 @@ namespace GraduationProject.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Profile", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("GraduationProject.Data.Domains.Specialization", b =>
+                {
+                    b.Navigation("Profiles");
                 });
 
             modelBuilder.Entity("GraduationProject.Models.CategoryOrder", b =>

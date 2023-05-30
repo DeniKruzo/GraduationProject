@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GraduationProject.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +48,33 @@ namespace GraduationProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CategoryOrder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryOrder", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Specialization",
+                columns: table => new
+                {
+                    SpecializationId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Specialization", x => x.SpecializationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +183,86 @@ namespace GraduationProject.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LongDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Img = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    CategoryOrderId = table.Column<int>(type: "int", nullable: false),
+                    isOpen = table.Column<bool>(type: "bit", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeadLine = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_CategoryOrder_CategoryOrderId",
+                        column: x => x.CategoryOrderId,
+                        principalTable: "CategoryOrder",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Profile",
+                columns: table => new
+                {
+                    ProfileId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsFree = table.Column<bool>(type: "bit", nullable: false),
+                    IsSafeDeal = table.Column<bool>(type: "bit", nullable: false),
+                    AboutMe = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Services = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AvatarImg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<short>(type: "smallint", nullable: false),
+                    LastVisit = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SpecId = table.Column<long>(type: "bigint", nullable: false),
+                    SpecProfileSpecializationId = table.Column<long>(type: "bigint", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profile", x => x.ProfileId);
+                    table.ForeignKey(
+                        name: "FK_Profile_Specialization_SpecProfileSpecializationId",
+                        column: x => x.SpecProfileSpecializationId,
+                        principalTable: "Specialization",
+                        principalColumn: "SpecializationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    CommentId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsPositive = table.Column<bool>(type: "bit", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdProfile = table.Column<long>(type: "bigint", nullable: false),
+                    ProfilesProfileId = table.Column<long>(type: "bigint", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comment_Profile_ProfilesProfileId",
+                        column: x => x.ProfilesProfileId,
+                        principalTable: "Profile",
+                        principalColumn: "ProfileId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +301,21 @@ namespace GraduationProject.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_ProfilesProfileId",
+                table: "Comment",
+                column: "ProfilesProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CategoryOrderId",
+                table: "Orders",
+                column: "CategoryOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profile_SpecProfileSpecializationId",
+                table: "Profile",
+                column: "SpecProfileSpecializationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -214,10 +336,25 @@ namespace GraduationProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comment");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Profile");
+
+            migrationBuilder.DropTable(
+                name: "CategoryOrder");
+
+            migrationBuilder.DropTable(
+                name: "Specialization");
         }
     }
 }
