@@ -20,7 +20,6 @@ namespace GraduationProject.Controllers
         private readonly IGetProfiles _getProfiles;
         private readonly IHaveSpecialization _getSpec;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly GraduationDbContext _context;
         private IWebHostEnvironment _appEnvironment;
 
@@ -40,11 +39,20 @@ namespace GraduationProject.Controllers
         [Authorize(Roles = "specialist")]
         public IActionResult Add()
         {
-            var upModel = new UpdateProfileModel()
+            string thisId = _userManager.GetUserId(User);
+            if (!_context.Profile.Any(p => p.OwnerId == thisId))
             {
-                SelectedSpec = _specialization,
-            };
-            return View(upModel);
+                var upModel = new UpdateProfileModel()
+                {
+                    SelectedSpec = _specialization,
+                };
+                return View(upModel);
+            }
+            else
+            {
+                return RedirectToAction("Edit", new { id = thisId });
+            }
+            
         }
 
         [HttpPost]
@@ -71,6 +79,7 @@ namespace GraduationProject.Controllers
             return RedirectToAction("OrdersList", "Orders");
         }
 
+        [HttpGet]
         public IActionResult List()
         {
             var model = new ProfileListViewModel
@@ -79,6 +88,21 @@ namespace GraduationProject.Controllers
                 getSpecialization = _getSpec.Specialization,
                 getUsers = _context.Users.ToList()
             };
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "specialist")]
+        public IActionResult Edit(string id) 
+        {
+            var profileEdit = _context.Profile
+                .FirstOrDefault(i => i.OwnerId == id);
+
+            var model = new UpdateProfileModel(profileEdit)
+            {
+                SelectedSpec = _specialization,
+            };
+
             return View(model);
         }
     }

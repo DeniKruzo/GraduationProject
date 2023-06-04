@@ -24,7 +24,14 @@
                     </h2>
                 </div>
                 <hr />
-                <a href="" type="button" class="btn btn-primary btn-lg btn-block">Откликнуться</a>
+                @if (User.IsInRole("specialist"))
+                {
+                    <a href="" type="button" class="btn btn-primary btn-lg btn-block">Откликнуться</a>
+                }
+                @if (User.IsInRole("customer"))
+                {
+                    <a href="" type="button" class="btn btn-primary btn-lg btn-block">Смотреть отклики</a>
+                }
             </div>
             <hr />
             <div class="col-xs-12">

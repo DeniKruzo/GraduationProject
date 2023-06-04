@@ -1,6 +1,8 @@
 ﻿using GraduationProject.Data.Domains;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 namespace GraduationProject.Models
 {
@@ -15,6 +17,7 @@ namespace GraduationProject.Models
         [NotMapped]
         public Profile Profile { get; set; }
 
+        [Display(Name = "Ваш аватар")]
         [NotMapped]
         public IFormFile formFile { get; set; }
 

@@ -9,8 +9,10 @@
             <h5 class="card-title">Дедлайн - @Model.DeadLine.ToString("dd.MM.yyyy")</h5>
             <p class="card-text">@Model.ShortDesc.</p>
             <a class="btn btn-primary" asp-controller="Orders" asp-action="GetMoreInfo" asp-route-id="@Model.OrderId">Смотреть подробности</a>
-           
-            <a class="btn btn-primary" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.OrderId">Редактировать</a>
+            @if (User.IsInRole("customer"))
+            {
+                <a class="btn btn-primary" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.OrderId">Редактировать</a>
+            }
         </div>
         <div class="card-footer">
             <small class="text-muted"> Бюджет - @Model.Price</small>

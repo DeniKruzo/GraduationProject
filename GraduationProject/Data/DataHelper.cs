@@ -3,6 +3,9 @@ using GraduationProject.Data.Domains;
 using GraduationProject.Domains;
 using GraduationProject.mocks;
 using GraduationProject.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore;
+
 
 namespace GraduationProject.Data
 {
@@ -11,7 +14,6 @@ namespace GraduationProject.Data
         /// <summary>
         /// Заполняем бд из локального репозитория (тестовы задания)
         /// </summary>
-        /// <param name="app"></param>
         public static void Seed(GraduationDbContext context)
         {
             if (!context.CategoryOrder.Any())
@@ -20,9 +22,7 @@ namespace GraduationProject.Data
             if (!context.Specialization.Any())
                 context.Specialization.AddRange(SpecializationDict.Select(c => c.Value));
 
-            if (!context.Roles.Any())
-
-                context.SaveChanges();
+            context.SaveChanges();
         }
 
         //Категории заказов
@@ -35,7 +35,7 @@ namespace GraduationProject.Data
                 {
                     var list = new CategoryOrder[]
                     {
-                         new CategoryOrder { Name = "IT-разработка", Description = "IT профессии"},
+                         new CategoryOrder { Name = "IT-среда", Description = "IT профессии"},
                          new CategoryOrder { Name = "Финансы", Description = "Работа с валютой"}
                     };
 
@@ -69,8 +69,5 @@ namespace GraduationProject.Data
                 return specializations;
             }
         }
-
-        //Роли пользователей
-     
     }
 }

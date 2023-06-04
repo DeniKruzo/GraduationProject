@@ -7,7 +7,8 @@ using GraduationProject.mocks;
 using GraduationProject.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("GraduationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'GraduationDbContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("GraduationDbContextConnection") ?? 
+    throw new InvalidOperationException("Connection string 'GraduationDbContextConnection' not found.");
 
 builder.Services.AddDbContext<GraduationDbContext>(options =>
     options.UseSqlServer(connectionString));

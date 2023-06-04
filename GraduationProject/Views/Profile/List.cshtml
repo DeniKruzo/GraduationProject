@@ -20,7 +20,11 @@
                             <h5 class="card-title">@user.FirstName.ToString()</h5>
                             <p class="card-text">специализация: @profile.SpecProfile.Name</p>
                             <p class="card-text">Рейтинг: @profile.Rating</p>
-                            <a href="#" class="btn btn-primary">Связаться</a>
+                            @if (User.IsInRole("customer"))
+                            {
+                                <a href="#" class="btn btn-primary">Связаться</a>
+                            }
+                            <a href="#" class="btn btn-primary">Отзывы</a>
                         </div>
                     </div>
                 }
