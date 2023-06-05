@@ -105,5 +105,22 @@ namespace GraduationProject.Controllers
 
             return View(model);
         }
+
+        [Authorize(Roles = "specialist")]
+        [HttpPost]
+        public IActionResult Edit(UpdateProfileModel model)
+        {
+            model.AvatarImg = ImageMethods.AddFile(_appEnvironment, model.formFile);
+            model.SpecProfile = _context.Specialization.First(c => c.Name == model.GetProfileName);
+            model.OwnerId = _userManager.GetUserId(User);
+            model.IsFree = true;
+            model.LastVisit = DateTime.Now;
+
+            _context.Profile.Update(model);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("OrdersList", "Orders");
+        }
     }
 }

@@ -6,29 +6,41 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row mt-5 mb-2">
-    
-    <div class="col-9">
-        @{
-            foreach (var profile in Model.getAllProfiles)
+<div class="gridfalse">
+    @{
+        foreach (var profile in Model.getAllProfiles)
+        {
+            foreach (var user in Model.getUsers.Where(n => n.Id == profile.OwnerId))
             {
-                foreach (var user in Model.getUsers.Where(n => n.Id == profile.OwnerId))
-                {
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="/image/@profile.AvatarImg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">@user.FirstName.ToString()</h5>
-                            <p class="card-text">специализация: @profile.SpecProfile.Name</p>
-                            <p class="card-text">Рейтинг: @profile.Rating</p>
-                            @if (User.IsInRole("customer"))
-                            {
-                                <a href="#" class="btn btn-primary">Связаться</a>
-                            }
-                            <a href="#" class="btn btn-primary">Отзывы</a>
-                        </div>
+                <div class="profilecard">
+                    <!-- Верхняя часть -->
+                    <div class="card__top">
+                        <!-- Изображение-ссылка товара -->
+                        <a href="#" class="card__image">
+                            <img src="/image/@profile.AvatarImg"
+                            alt="Apple IPhone 14 PRO Max Gold" />
+                        </a>
                     </div>
-                }
+                    <!-- Нижняя часть -->
+                    <div class="card__bottom">
+                        <!-- Цены на товар (с учетом скидки и без)-->
+                        <div class="card__prices">
+                            <div class="card__price card__price--discount">@user.FirstName.ToString()</div>
+                            <div class="card__price card__price--common">@profile.Rating *</div>
+                        </div>
+                        <!-- Ссылка-название товара -->
+                        <a href="#" class="card__title">
+                           Cпециализация >>> @profile.SpecProfile.Name
+                        </a>
+                        <!-- Кнопка добавить в корзину -->
+                        <button class="card__add">Отзывы</button>
+                        @if (User.IsInRole("customer"))
+                        {
+                            <button class="card__add">Связаться</button>
+                        }
+                    </div>
+                </div>
             }
         }
-    </div>
+     }
 </div>

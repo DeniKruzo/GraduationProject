@@ -45,7 +45,15 @@
                 </div>
             </div>
             <hr />
-            <a asp-area="" asp-controller="Orders" asp-action="MyOrdersList" type="button" class="btn btn-outline-danger">Назад</a>
+            @if (User.IsInRole("specialist"))
+            {
+                <a asp-area="" asp-controller="Orders" asp-action="OrdersList" type="button" class="btn btn-outline-danger">Назад</a>
+            }
+            @if (User.IsInRole("customer"))
+            {
+                <a asp-area="" asp-controller="Orders" asp-action="MyOrdersList" type="button" class="btn btn-outline-danger">Назад</a>
+            }
+            
         }
     }
 </div>

@@ -13,8 +13,13 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProfileId" />
-          
-       
+
+            <div class="form-group" method="post" enctype="multipart/form-data">
+                При изменение загрузить заного - 
+                <label asp-for="formFile" class="control-label"></label>
+                <input asp-for="formFile" class="form-control" name="formFile" accept=".jpg,.png,.jpeg" />
+                <span asp-validation-for="formFile" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsSafeDeal" /> @Html.DisplayNameFor(model => model.IsSafeDeal)
@@ -31,18 +36,15 @@
                 <span asp-validation-for="Services" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AvatarImg" class="control-label"></label>
-                <input asp-for="AvatarImg" class="form-control" />
-                <span asp-validation-for="AvatarImg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                Специализация
+                <select asp-for="GetProfileName" asp-items="@Model.SelectedSpec" class="form-select">
+                    <option disabled>Выберите специализацию</option>
+                </select>
             </div>
             <hr />
+            Нажмите - Подтвердить(если внесли изменения)
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Подтвердить" class="btn btn-primary" />
             </div>
         </form>
     </div>
