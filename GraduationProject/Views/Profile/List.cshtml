@@ -13,26 +13,21 @@
             foreach (var user in Model.getUsers.Where(n => n.Id == profile.OwnerId))
             {
                 <div class="profilecard">
-                    <!-- Верхняя часть -->
                     <div class="card__top">
-                        <!-- Изображение-ссылка товара -->
                         <a href="#" class="card__image">
-                            <img src="/image/@profile.AvatarImg"
-                            alt="Apple IPhone 14 PRO Max Gold" />
+                            <img src="/image/@profile.AvatarImg" alt="Name of Image" />
                         </a>
                     </div>
                     <!-- Нижняя часть -->
                     <div class="card__bottom">
-                        <!-- Цены на товар (с учетом скидки и без)-->
                         <div class="card__prices">
                             <div class="card__price card__price--discount">@user.FirstName.ToString()</div>
-                            <div class="card__price card__price--common">@profile.Rating *</div>
+                            <div class="card__price card__price--common fa-sharp fa-solid fa-star"> @profile.Rating
+                            </div>
                         </div>
-                        <!-- Ссылка-название товара -->
-                        <a href="#" class="card__title">
-                           Cпециализация >>> @profile.SpecProfile.Name
-                        </a>
-                        <!-- Кнопка добавить в корзину -->
+                        <div class="card__title">
+                            Cпециализация >>> @profile.SpecProfile.Name
+                        </div>
                         <button class="card__add">Отзывы</button>
                         @if (User.IsInRole("customer"))
                         {

@@ -1,5 +1,4 @@
-﻿
-body {
+﻿body {
     margin-bottom: 60px;
     background-color: silver;
     font-family: Antiqua;
@@ -31,8 +30,9 @@ header nav a {
     margin-left: 15px;
 }
 
-header nav a:hover 
-{text-decoration: underline}
+header nav a:hover {
+    text-decoration: underline
+}
 
 @media (min-width: 768px) {
     html {
@@ -91,7 +91,7 @@ button {
     cursor: revert;
 }
 
-/* Remove list styles (bullets/numbers) */
+
 ol,
 ul,
 menu {
@@ -102,6 +102,7 @@ menu {
 img {
     max-inline-size: 100%;
     max-block-size: 100%;
+    
 }
 
 textarea {
@@ -190,8 +191,8 @@ pre {
 }
 
 .profilecard {
-    width: 225px;
-    min-height: 350px;
+    width: 250px;
+    min-height: 400px;
     -webkit-box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
     display: -webkit-box;
@@ -254,9 +255,9 @@ pre {
 }
 
 .card__image:hover > img {
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
+    -webkit-transform: scale(2.2);
+    -ms-transform: scale(2.2);
+    transform: scale(2.2);
 }
 
 .card__bottom {
@@ -303,12 +304,7 @@ pre {
     flex-wrap: wrap-reverse;
 }
 
-.card__price--discount::before {
-    content: "Имя___________";
-    font-weight: 400;
-    font-size: 13px;
-    color: #bfbfbf;
-}
+
 
 .card__price--common {
     font-weight: 400;
@@ -324,16 +320,13 @@ pre {
     justify-content: flex-end;
 }
 
-.card__price--common::before {
-    content: "Рейтинг ____";
-    font-weight: 400;
-    font-size: 13px;
-    color: #bfbfbf;
-}
+
 
 .card__title {
     display: block;
     margin-bottom: 10px;
+    text-decoration: none;
+    font-family: Antiqua;
     font-weight: 400;
     font-size: 17px;
     line-height: 150%;
@@ -366,3 +359,4 @@ pre {
     background-color: #ff6633;
     color: #fff;
 }
+
