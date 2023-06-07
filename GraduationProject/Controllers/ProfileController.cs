@@ -80,12 +80,33 @@ namespace GraduationProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult List()
+        [Route("Profile/List")]
+        [Route("Profile/List/{specilization}")]
+        public IActionResult List(string specilization)
         {
+            string _specilization = specilization;
+            IQueryable<Profile> profile = null;
+            string currSpec = "";
+
+            if (string.IsNullOrEmpty(specilization))
+            {
+                profile = _getProfiles.Profile;
+            }
+            else
+            {
+                if (string.Equals(specilization.ToString(), specilization, StringComparison.OrdinalIgnoreCase))
+                {
+                    profile = _getProfiles
+                        .Profile
+                        .Where(i => i.SpecProfile.Name.Equals(specilization.ToString()));
+                }
+
+                currSpec = _specilization;
+            }
             var model = new ProfileListViewModel
             {
-                getAllProfiles = _getProfiles.Profile,
-                getSpecialization = _getSpec.Specialization,
+                getAllProfiles = profile,
+                specialization = currSpec,
                 getUsers = _context.Users.ToList()
             };
             return View(model);

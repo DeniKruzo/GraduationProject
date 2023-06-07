@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 
 namespace GraduationProject.Controllers
 {
@@ -23,6 +24,7 @@ namespace GraduationProject.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IWebHostEnvironment _appEnvironment;
+        private int _pageSize = 2;
         public SelectList category { get; set; }
 
         public OrdersController(IAllOrders allOrders, IOrderCategory orderCategory,GraduationDbContext context,
@@ -38,39 +40,31 @@ namespace GraduationProject.Controllers
             
         }
 
-        [Route("Orders/ordersList")]
-        [Route("Orders/ordersList/{category}")]
+        [Route("Orders/OrdersList")]
+        [Route("Orders/OrdersList/{gate:int}")]
+        [Route("Orders/OrdersList/{categori}")]
+        [Route("OrdersList/{categori}/{gate:int}")]
         [Authorize(Roles = "specialist")]
-        public IActionResult OrdersList(string category)
+        public IActionResult OrdersList(string categori, int gate = 1)
         {
-            string _category = category;
-            IQueryable<openOrder> openOrders = null;
-            string currCategory = "";
+            var openOrders = categori == null ? _allOrders.Orders 
+                : _allOrders.Orders
+                    .Where(i => i.CategoryOrder.Name.Equals(categori.ToString())); 
+       
+            var orders = openOrders
+               .Skip((gate - 1) * _pageSize)
+               .Take(_pageSize);
 
-            //рефакторинг тернарным оператором
-            //openOrders = category == null ? openOrders = _allOrders.Orders : openOrders = _allOrders.Orders.Where(i => i.CategoryOrder.Name.Equals(category.ToString()));
+            var pagesQuantity = (int)(
+                Math.Ceiling(openOrders.Count() / (float)_pageSize));
 
-            if (string.IsNullOrEmpty(category))
-            {
-                openOrders = _allOrders.Orders;
-            }
-            else
-            {
-                if(string.Equals(category.ToString(),category,StringComparison.OrdinalIgnoreCase))
-                {
-                    openOrders = _allOrders
-                        .Orders
-                        .Where(i => i.CategoryOrder.Name.Equals(category.ToString()));
-                }
-
-                currCategory = _category;
-            }
             var modelForOrders = new OrdersListViewModel
             {
-                getAllOrders = openOrders,
-                orderCategory = currCategory,
+                getAllOrders = orders,
+                orderCategory = categori,
+                CurrentPage = gate,
+                PagesQuantity = pagesQuantity
             };
-
             return View(modelForOrders);
         }
 

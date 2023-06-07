@@ -1,11 +1,19 @@
-﻿
+﻿@using GraduationProject.Data.Domains;
+@model List<string>
 
 <form method="post">
     <div class="form-group">
-        Специализация
-        <select class="form-select">
-            <option disabled>Выберите специализацию</option>
-        </select>
+        Специализации
+        @foreach (var c in Model)
+        {
+            <div class="row mb-2">
+                <a asp-controller="Profile" asp-action="List" type="button"
+                   asp-route-specilization="@c"
+                   class="btn btn-outline-primary btn-sm">
+                    @c
+                </a>
+            </div>
+        }
     </div>
     <div class="form-group form-check">
         <label class="form-check-label">

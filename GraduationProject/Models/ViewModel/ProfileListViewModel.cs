@@ -8,6 +8,8 @@ namespace GraduationProject.Models.ViewModel
     {
         public IEnumerable<Profile> getAllProfiles { get; set; }
 
+        public string specialization {get; set;}
+
         public IEnumerable<Specialization> getSpecialization { get; set; }
 
         public IEnumerable<ApplicationUser> getUsers { get; set; }
