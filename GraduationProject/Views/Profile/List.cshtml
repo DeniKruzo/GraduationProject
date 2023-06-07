@@ -6,6 +6,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row justify-content-center">
+    <div class="col-5 mt-5 mb-2">
+        <button class="btn btn-outline-primary" id="sendFormButton">Расширенный поиск</button>
+        <div id="form-table" class="form-table">
+            @await Component.InvokeAsync("MenuSpecialization")
+        </div>
+    </div>
+</div>
+
 <div class="gridfalse">
     @{
         foreach (var profile in Model.getAllProfiles)
@@ -39,3 +48,23 @@
         }
      }
 </div>
+
+
+<script>
+    addEventListener("DOMContentLoaded", (event) => {
+        const toggleForm = () => {
+            const formTable = document.getElementById('form-table')
+
+            if (!formTable) {
+                return
+            }
+            formTable.classList.toggle('form-table_visible')
+        }
+
+        const sendFormButton = document.getElementById("sendFormButton")
+
+        sendFormButton.addEventListener('click', () => {
+            toggleForm()
+        })
+    });
+</script>

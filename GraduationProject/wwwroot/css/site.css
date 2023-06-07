@@ -360,3 +360,10 @@ pre {
     color: #fff;
 }
 
+.form-table_visible {
+    display: block !important;
+}
+
+.form-table {
+    display: none;
+}
