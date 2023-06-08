@@ -20,8 +20,6 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
-
 builder.Services.AddRazorPages();
 
 //подключаем репу через синглтон
@@ -48,30 +46,6 @@ app.UseRouting();
 app.UseAuthentication();;
 
 app.UseAuthorization();
-
-/*
-//app.UseMvc(routes =>
-//{
-//    routes.MapRoute(
-//       name: null,
-//       template: "{bug}/Page{gate}",
-//       defaults: new { Controller = "Orders", action = "OrdersList" });
-
-//    routes.MapRoute(
-//      name: null,
-//      template: "Page{gate}",
-//      defaults: new { Controller = "Orders", action = "OrdersList" });
-
-//    routes.MapRoute(
-//        name: null,
-//        template: "{bug}",
-//        defaults: new { Controller = "Orders", action = "OrdersList", gate = 1 });
-
-//    routes.MapRoute(
-//        name: "default",
-//        template: "{controller=Home}/{action=Index}/{id?}");
-//});
-*/
 
 app.UseEndpoints(endpoints =>
 {
