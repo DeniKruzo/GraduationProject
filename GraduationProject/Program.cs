@@ -20,6 +20,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+
 builder.Services.AddRazorPages();
 
 //подключаем репу через синглтон
@@ -47,12 +49,40 @@ app.UseAuthentication();;
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
+/*
+//app.UseMvc(routes =>
+//{
+//    routes.MapRoute(
+//       name: null,
+//       template: "{bug}/Page{gate}",
+//       defaults: new { Controller = "Orders", action = "OrdersList" });
+
+//    routes.MapRoute(
+//      name: null,
+//      template: "Page{gate}",
+//      defaults: new { Controller = "Orders", action = "OrdersList" });
+
+//    routes.MapRoute(
+//        name: null,
+//        template: "{bug}",
+//        defaults: new { Controller = "Orders", action = "OrdersList", gate = 1 });
+
+//    routes.MapRoute(
+//        name: "default",
+//        template: "{controller=Home}/{action=Index}/{id?}");
+//});
+*/
+
+app.UseEndpoints(endpoints =>
+{
+
+    endpoints.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
 
 app.MapRazorPages();
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -60,6 +90,5 @@ using (var scope = app.Services.CreateScope())
     //заполнили тестовыми данными бд
     DataHelper.Seed(context);
 }
-
 
 app.Run();

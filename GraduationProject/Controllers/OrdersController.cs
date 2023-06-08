@@ -40,28 +40,27 @@ namespace GraduationProject.Controllers
             
         }
 
-        [Route("Orders/OrdersList")]
-        [Route("Orders/OrdersList/{gate:int}")]
-        [Route("Orders/OrdersList/{categori}")]
-        [Route("OrdersList/{categori}/{gate:int}")]
+        [Route("OrdersList")]
+        [Route("OrdersList/{gate}")]
+        [Route("OrdersList/{bug}/{gate:int}")]
         [Authorize(Roles = "specialist")]
-        public IActionResult OrdersList(string categori, int gate = 1)
+        public IActionResult OrdersList(string bug, int gate = 1)
         {
-            var openOrders = categori == null ? _allOrders.Orders 
+            var ordersWithCategory = bug == null ? _allOrders.Orders 
                 : _allOrders.Orders
-                    .Where(i => i.CategoryOrder.Name.Equals(categori.ToString())); 
+                    .Where(i => i.CategoryOrder.Name.Equals(bug.ToString())); 
        
-            var orders = openOrders
+            var orders = ordersWithCategory
                .Skip((gate - 1) * _pageSize)
                .Take(_pageSize);
 
             var pagesQuantity = (int)(
-                Math.Ceiling(openOrders.Count() / (float)_pageSize));
+                Math.Ceiling(ordersWithCategory.Count() / (float)_pageSize));
 
             var modelForOrders = new OrdersListViewModel
             {
                 getAllOrders = orders,
-                orderCategory = categori,
+                orderCategory = bug,
                 CurrentPage = gate,
                 PagesQuantity = pagesQuantity
             };

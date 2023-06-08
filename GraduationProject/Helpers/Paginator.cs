@@ -43,7 +43,7 @@ namespace GraduationProject.Helpers
 
                 var tagA = new TagBuilder("a");
                 tagA.AddCssClass("page-link");
-                tagA.Attributes["href"] = urlHelper.Action(PageAction, new { gate = i });
+                tagA.Attributes["href"] = urlHelper.Action(PageAction,new { gate = i });
                 tagA.InnerHtml.Append(i.ToString());
 
                 tagLi.InnerHtml.AppendHtml(tagA);
