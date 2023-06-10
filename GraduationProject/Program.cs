@@ -28,6 +28,7 @@ builder.Services.AddTransient<IOrderCategory, CategoryOfOrderRepository>();
 builder.Services.AddTransient<IGetProfiles, ProfileRepository>();
 builder.Services.AddTransient<IHaveSpecialization, SpecializationRepository>();
 builder.Services.AddTransient<IViewComments, CommentRepository>();
+builder.Services.AddTransient<IMakeResponse, ResponseRepository>();
 
 var app = builder.Build();
 

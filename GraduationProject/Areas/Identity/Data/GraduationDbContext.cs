@@ -25,6 +25,8 @@ public class GraduationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Profile> Profile { get; set; }
 
+    public DbSet<Response> Responses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
