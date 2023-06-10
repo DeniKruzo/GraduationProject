@@ -40,7 +40,9 @@
                         <button class="card__add">Отзывы</button>
                         @if (User.IsInRole("customer"))
                         {
-                            <button class="card__add">Связаться</button>
+                            <a asp-area="" asp-controller="Response" asp-action="Create"
+                               asp-route-id="@profile.ProfileId" asp-route-recId="@user.Id.ToString()"
+                            type="button" class="card__add">Связаться</a>
                         }
                     </div>
                 </div>

@@ -1,0 +1,32 @@
+﻿@model GraduationProject.Data.Domains.Response
+
+@{
+    ViewData["Title"] = "Отклик";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Отлик на предложение</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea asp-for="Message"
+                          rows="5" cols="33" class="form-control">
+                </textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <input asp-route-recId="@Model.RecipientId.ToString()"
+                    asp-route-id="@Model.ProfileOrOrderId"
+                type="submit" value="Отправить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

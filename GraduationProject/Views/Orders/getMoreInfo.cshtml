@@ -26,7 +26,9 @@
                 <hr />
                 @if (User.IsInRole("specialist"))
                 {
-                    <a href="" type="button" class="btn btn-primary btn-lg btn-block">Откликнуться</a>
+                    <a asp-area="" asp-controller="Response" asp-action="Create"
+                       asp-route-id="@order.OrderId" asp-route-recId="@order.CustomerId"
+                       type="button" class="btn btn-primary btn-lg btn-block">Откликнуться</a>
                 }
                 @if (User.IsInRole("customer"))
                 {

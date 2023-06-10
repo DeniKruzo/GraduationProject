@@ -1,10 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GraduationProject.Areas.Identity.Data;
+using GraduationProject.Data;
+using GraduationProject.Data.Domains;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Controllers
 {
     public class ResponseController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly GraduationDbContext context;
+
+        public ResponseController(UserManager<ApplicationUser> userManager, GraduationDbContext context)
+        {
+             _userManager = userManager;
+            this.context = context;
+        }
+
         // GET: ResponseController
         public ActionResult Index()
         {
@@ -17,67 +32,35 @@ namespace GraduationProject.Controllers
             return View();
         }
 
-        // GET: ResponseController/Create
-        public ActionResult Create()
+        
+
+        public ActionResult Create(int id, string recId)
         {
-            return View();
+            var model = new Response()
+            {
+                RecipientId = recId,
+                ProfileOrOrderId = id,
+            };
+            return View(model);
         }
 
-        // POST: ResponseController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Response model, int id, string recId)
         {
-            try
+            var newModel = new Response()
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                Message = model.Message,
+                SenderId = _userManager.GetUserId(User),
+                RecipientId = recId,
+                ProfileOrOrderId = id
+            };
 
-        // GET: ResponseController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            context.Responses.Add(newModel);
 
-        // POST: ResponseController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            context.SaveChanges();
 
-        // GET: ResponseController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ResponseController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("About", "Home");
         }
     }
 }
