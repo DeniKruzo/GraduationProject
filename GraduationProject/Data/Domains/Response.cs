@@ -14,7 +14,7 @@ namespace GraduationProject.Data.Domains
         public long ProfileOrOrderId { get; set; }
 
         [Required]
-        [Display(Name = "Оставте сообщение для получателя")]
+        [Display(Name = "Сообщение для получателя")]
         public string Message { get; set;}
 
     }

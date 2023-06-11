@@ -32,7 +32,8 @@
                 }
                 @if (User.IsInRole("customer"))
                 {
-                    <a href="" type="button" class="btn btn-primary btn-lg btn-block">Смотреть отклики</a>
+                    <a asp-controller="Response" asp-action="List" asp-route-id="@order.OrderId"
+                    type="button" class="btn btn-primary btn-lg btn-block">Смотреть отклики</a>
                 }
             </div>
             <hr />

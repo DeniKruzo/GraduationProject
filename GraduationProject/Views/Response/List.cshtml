@@ -1,0 +1,46 @@
+﻿@model IEnumerable<GraduationProject.Data.Domains.Response>
+
+@{
+    ViewData["Title"] = "Отклики";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ваши отклики:</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SenderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipientId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileOrOrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipientId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileOrOrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

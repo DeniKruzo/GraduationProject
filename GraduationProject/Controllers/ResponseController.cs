@@ -32,7 +32,23 @@ namespace GraduationProject.Controllers
             return View();
         }
 
-        
+        public IActionResult List(long id)
+        {
+            IQueryable<Response> data;
+         
+            data = context.Responses.Where(r => r.RecipientId == _userManager.GetUserId(User));
+
+            if (id != 0)
+            {
+                data = data.Where(d => d.ProfileOrOrderId == id);
+                return RedirectToAction("About", "Home");
+            }
+
+            if (!data.Any())
+                return RedirectToAction("About", "Home");
+
+            return View(data);
+        }
 
         public ActionResult Create(int id, string recId)
         {
@@ -41,6 +57,7 @@ namespace GraduationProject.Controllers
                 RecipientId = recId,
                 ProfileOrOrderId = id,
             };
+
             return View(model);
         }
 
