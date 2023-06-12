@@ -11,13 +11,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IsPositive)
+                
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OwnerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProfile)
+                Имя
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Text)
@@ -29,13 +26,14 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IsPositive)
+                @if (item.IsPositive)
+                {
+                    <span style="background-color: green" class="badge" >+</span>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OwnerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProfile)
+                <!--Нужно брать имя а не ид-->
+                @item.OwnerId
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Text)

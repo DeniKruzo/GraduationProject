@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Ваши отклики:</h1>
+<h1>Ваши отклики:
+    <span class="border-secondary">@Model.Count()</span>
+</h1>
 
 @foreach (var item in Model) {
     <div class="card border-secondary mb-3" style="max-width: 18rem;">
@@ -17,7 +19,9 @@
             <a href="https://localhost:7298/Home/About" type="button" class="btn btn-outline-dark">Начать Чат</a>
             @if (User.IsInRole("customer"))
             {
-                <a asp-area="" asp-controller="Comments" asp-action="Create" type="button" class="btn btn-outline-dark">Оставить Отзыв</a>
+                <a asp-area="" asp-controller="Comments" asp-action="Create" 
+                asp-route-id="@item.SenderId"
+                type="button" class="btn btn-outline-dark">Оставить Отзыв</a>
             }
         </div>
     </div>

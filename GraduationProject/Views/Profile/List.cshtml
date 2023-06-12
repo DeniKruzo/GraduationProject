@@ -38,6 +38,7 @@
                             Cпециализация >>> @profile.SpecProfile.Name
                         </div>
                         <a asp-area="" asp-controller="Comments" asp-action="Index"
+                           asp-route-id="@profile.ProfileId"
                            type="button" class="card__add">Отзывы</a>
                         @if (User.IsInRole("customer"))
                         {

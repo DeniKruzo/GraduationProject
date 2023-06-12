@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GraduationProject.Data;
 using GraduationProject.Data.Domains;
+using Microsoft.AspNetCore.Identity;
+using GraduationProject.Areas.Identity.Data;
 
 namespace GraduationProject.Controllers
 {
     public class CommentsController : Controller
     {
         private readonly GraduationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentsController(GraduationDbContext context)
+        public CommentsController(GraduationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long id)
         {
               return _context.Comment != null ? 
-                          View(await _context.Comment.ToListAsync()) :
+                          View(await _context.Comment.Where(c=>c.IdProfile==id).ToListAsync()) :
                           Problem("Entity set 'GraduationDbContext.Comment'  is null.");
         }
 
@@ -48,18 +52,30 @@ namespace GraduationProject.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentId,IsPositive,OwnerId,IdProfile,Text")] Comment comment)
+        public async Task<IActionResult> Create(Comment comment, string id)
         {
-            if (ModelState.IsValid)
+            long profId = _context.Profile.First(p=>p.OwnerId == id).ProfileId;
+            var model = new Comment()
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                IsPositive = comment.IsPositive,
+                Text = comment.Text,
+                OwnerId = _userManager.GetUserId(User),
+                IdProfile = profId,
+                Profiles = _context.Profile.First(p => p.OwnerId == id),
+            };
+         
+            _context.Add(model);
+
+            if(comment.IsPositive)
+            {
+                //добавлять +1 к рейтингу профиля
             }
-            return View(comment);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("List", "Response");
         }
 
         public async Task<IActionResult> Edit(long? id)
