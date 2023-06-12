@@ -1,20 +1,23 @@
-﻿@model IEnumerable<GraduationProject.Data.Domains.Comment>
+﻿@using GraduationProject.Models.ViewModel
+@model CommentListViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Отзывы";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Отзывы пользователя: </h1>
+<h1>Отзывы пользователя:
+    <span>@Model.getComments.Count()</span>
+</h1>
 
-<table class="table">
+<table class="table" style="background-color: oldlace">
     <thead>
         <tr>
             <th>
                 
             </th>
             <th>
-                Имя
+                Пользователь
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Text)
@@ -23,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.getComments) {
         <tr>
             <td>
                 @if (item.IsPositive)
@@ -32,11 +35,13 @@
                 }
             </td>
             <td>
-                <!--Нужно брать имя а не ид-->
-                @item.OwnerId
+                @foreach (var user in Model.getUsers.Where(n => n.Id == item.OwnerId))
+                {
+                    @user.FirstName.ToString()  
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Text)
+                @item.Text
             </td>
         </tr>
 }

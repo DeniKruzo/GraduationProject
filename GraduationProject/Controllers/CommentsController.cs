@@ -9,6 +9,8 @@ using GraduationProject.Data;
 using GraduationProject.Data.Domains;
 using Microsoft.AspNetCore.Identity;
 using GraduationProject.Areas.Identity.Data;
+using GraduationProject.Models;
+using GraduationProject.Models.ViewModel;
 
 namespace GraduationProject.Controllers
 {
@@ -23,11 +25,18 @@ namespace GraduationProject.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(long id)
+        public IActionResult Index(long id)
         {
-              return _context.Comment != null ? 
-                          View(await _context.Comment.Where(c=>c.IdProfile==id).ToListAsync()) :
-                          Problem("Entity set 'GraduationDbContext.Comment'  is null.");
+            if(_context.Comment == null) 
+                Problem("Entity set 'GraduationDbContext.Comment'  is null.");
+
+            var model = new CommentListViewModel()
+            {
+                getComments = _context.Comment.Where(c => c.IdProfile == id).ToList(),
+                getUsers = _context.Users.ToList()
+            };
+
+            return View(model);
         }
 
         public async Task<IActionResult> Details(long? id)
@@ -52,16 +61,15 @@ namespace GraduationProject.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Comment comment, string id)
+        public async Task<IActionResult> Create(Comment updateComment, string id)
         {
             long profId = _context.Profile.First(p=>p.OwnerId == id).ProfileId;
             var model = new Comment()
             {
-                IsPositive = comment.IsPositive,
-                Text = comment.Text,
+                IsPositive = updateComment.IsPositive,
+                Text = updateComment.Text,
                 OwnerId = _userManager.GetUserId(User),
                 IdProfile = profId,
                 Profiles = _context.Profile.First(p => p.OwnerId == id),
@@ -69,7 +77,7 @@ namespace GraduationProject.Controllers
          
             _context.Add(model);
 
-            if(comment.IsPositive)
+            if(updateComment.IsPositive)
             {
                 //добавлять +1 к рейтингу профиля
             }
