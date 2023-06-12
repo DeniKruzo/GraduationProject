@@ -37,7 +37,8 @@
                         <div class="card__title">
                             Cпециализация >>> @profile.SpecProfile.Name
                         </div>
-                        <button class="card__add">Отзывы</button>
+                        <a asp-area="" asp-controller="Comments" asp-action="Index"
+                           type="button" class="card__add">Отзывы</a>
                         @if (User.IsInRole("customer"))
                         {
                             <a asp-area="" asp-controller="Response" asp-action="Create"

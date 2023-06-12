@@ -7,40 +7,18 @@
 
 <h1>Ваши отклики:</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SenderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecipientId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfileOrOrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SenderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipientId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProfileOrOrderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-        </tr>
+    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+      <div class="card-header">Отклик</div>
+      <div class="card-body text-dark">
+        <p class="card-text">@item.Message</p>
+      </div>
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <a href="https://localhost:7298/Home/About" type="button" class="btn btn-outline-dark">Начать Чат</a>
+            @if (User.IsInRole("customer"))
+            {
+                <a asp-area="" asp-controller="Comments" asp-action="Create" type="button" class="btn btn-outline-dark">Оставить Отзыв</a>
+            }
+        </div>
+    </div>
 }
-    </tbody>
-</table>

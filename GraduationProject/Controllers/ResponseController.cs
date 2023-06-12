@@ -20,18 +20,6 @@ namespace GraduationProject.Controllers
             this.context = context;
         }
 
-        // GET: ResponseController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: ResponseController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         public IActionResult List(long id)
         {
             IQueryable<Response> data;
@@ -41,8 +29,8 @@ namespace GraduationProject.Controllers
             if (id != 0)
             {
                 data = data.Where(d => d.ProfileOrOrderId == id);
-                return RedirectToAction("About", "Home");
             }
+
 
             if (!data.Any())
                 return RedirectToAction("About", "Home");

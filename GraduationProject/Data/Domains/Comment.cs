@@ -7,6 +7,7 @@ namespace GraduationProject.Data.Domains
         [Key]
         public long CommentId { get; set; }
 
+        [Display(Name = "Положительный?")]
         public bool IsPositive { get; set; }
 
         public string OwnerId { get; set; }
