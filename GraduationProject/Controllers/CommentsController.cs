@@ -79,7 +79,9 @@ namespace GraduationProject.Controllers
 
             if(updateComment.IsPositive)
             {
-                //добавлять +1 к рейтингу профиля
+                var profile = _context.Profile.First(m => m.ProfileId == profId);
+                profile.Rating += 1;
+                _context.Update(profile);
             }
 
             await _context.SaveChangesAsync();
