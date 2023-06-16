@@ -1,22 +1,17 @@
-﻿namespace GraduationProject.Models
+﻿using GraduationProject.Areas.Identity.Data;
+
+namespace GraduationProject.Models
 {
     public class Chat
     {
         public long Id { get; set; }
 
-        public ICollection<Message> Messages {get; set;}
-
-
-    }
-
-    public class Message
-    {
-        public long Id { get; set; }
-
         public string Name { get; set; }
 
-        public string Text { get; set; }
+        public ICollection<Message> Messages {get; set;}
 
-        public DateTime TimeStamp { get; set; }
+        public ICollection<ApplicationUser> Users { get; set;}
+
+        public ChatType Type { get; set;}
     }
 }

@@ -18,14 +18,12 @@ public class GraduationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<openOrder> Orders { get; set; }
     public DbSet<CategoryOrder> CategoryOrder { get; set; }
-
     public DbSet<Specialization> Specialization { get; set; }
-
     public DbSet<Comment> Comment { get; set; }
-
     public DbSet<Profile> Profile { get; set; }
-
     public DbSet<Response> Responses { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<Chat> Chats { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

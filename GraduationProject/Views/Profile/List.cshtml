@@ -39,12 +39,12 @@
                         </div>
                         <a asp-area="" asp-controller="Comments" asp-action="Index"
                            asp-route-id="@profile.ProfileId"
-                           type="button" class="card__add">Отзывы</a>
+                           type="button" class="card__add" style="text-decoration: none">Отзывы</a>
                         @if (User.IsInRole("customer"))
                         {
                             <a asp-area="" asp-controller="Response" asp-action="Create"
                                asp-route-id="@profile.ProfileId" asp-route-recId="@user.Id.ToString()"
-                            type="button" class="card__add">Связаться</a>
+                               type="button" class="card__add" style="text-decoration: none">Связаться</a>
                         }
                     </div>
                 </div>

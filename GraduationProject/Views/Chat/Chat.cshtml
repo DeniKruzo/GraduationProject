@@ -1,0 +1,19 @@
+﻿@model Chat
+@{
+    ViewData["Title"] = "Чатик";
+    Layout = "~/Views/Shared/ChatLayout.cshtml";
+}
+<div class="chat-body">
+    @foreach (var message in Model.Messages)
+    {
+        <div class="message">
+            <header>@message.Name:</header>
+            <p>@message.Text</p>
+            <footer>@message.TimeStamp</footer>
+        </div>
+    }
+</div>
+<div class="chat-input">
+    <input type="text" />
+    <button>Отправить</button>
+</div>
