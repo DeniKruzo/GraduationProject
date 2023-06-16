@@ -17,9 +17,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GraduationDbContext>();
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddRazorPages();
 
 //подключаем репу через синглтон
@@ -31,23 +29,17 @@ builder.Services.AddTransient<IViewComments, CommentRepository>();
 builder.Services.AddTransient<IMakeResponse, ResponseRepository>();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();;
-
 app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
 
@@ -55,8 +47,6 @@ app.UseEndpoints(endpoints =>
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 });
-
-
 app.MapRazorPages();
 
 using (var scope = app.Services.CreateScope())
