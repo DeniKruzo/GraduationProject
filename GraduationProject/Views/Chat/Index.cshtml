@@ -1,20 +1,17 @@
-﻿@{
+﻿@model IEnumerable<Chat>
+@{
     ViewData["Title"] = "Чатик";
     Layout = "~/Views/Shared/ChatLayout.cshtml";
 }
 
-@for(int i = 0; i<15; i++)
-{
-    <div class="chat-body">
-        <div class="message">
-            <header>Danil:</header>
-            <p>Тестовое сообщение!</p>
-            <footer>16:00</footer>
-        </div>
-    </div>
-}
 
-<div class="chat-input">
-    <input type="text" />
-    <button>Отправить</button>
-</div>
+    <div class="chat-body">
+        @foreach(var chat in Model)
+        {
+            <a class="room-button" asp-controller="Chat" asp-action="JoinRoom" asp-route-id="@chat.Id">
+                @chat.Name
+            </a>
+        }
+    </div>
+
+

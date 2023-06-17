@@ -1,6 +1,8 @@
 ﻿using GraduationProject.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Security.Claims;
 
 namespace GraduationProject.Components
 {
@@ -15,7 +17,12 @@ namespace GraduationProject.Components
 
         public IViewComponentResult Invoke()
         {
-            var chats = _context.Chats.ToList();
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var chats = _context.ChatUsers
+                .Include(x => x.Chat)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.Chat)
+                .ToList();
             return View(chats);
         }
     }

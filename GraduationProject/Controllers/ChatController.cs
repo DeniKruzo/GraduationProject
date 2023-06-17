@@ -3,6 +3,8 @@ using GraduationProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Security.Claims;
 
 namespace GraduationProject.Controllers
 {
@@ -17,17 +19,29 @@ namespace GraduationProject.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var chats = _context.Chats
+                .Include(x => x.Users)
+                .Where(x => !x.Users
+                        .Any(x => x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                .ToList();
+            return View(chats);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateRoom(string name)
         {
-            _context.Chats.Add(new Chat
+            var chat = new Chat
             {
                 Name = name,
                 Type = ChatType.Room,
+            };
+
+            chat.Users.Add(new ChatUser
+            {
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                RoleInChat = UserRoleInChat.Admin
             });
+            _context.Chats.Add(chat);
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Chat");
@@ -45,6 +59,7 @@ namespace GraduationProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(long ChatId, string message)
         {
+         
             var Message = new Message
             {
                 ChatId = ChatId,
@@ -56,6 +71,22 @@ namespace GraduationProject.Controllers
             _context.Messages.Add(Message);
             await _context.SaveChangesAsync();
             return RedirectToAction("Chat","Chat",new {id=ChatId});
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> JoinRoom(long id)
+        {
+            var chatUser = new ChatUser
+            {
+                ChatId = id,
+                UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                RoleInChat = UserRoleInChat.Member
+            };
+
+            _context.ChatUsers.Add(chatUser);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Chat", "Chat", new {id=id});
         }
     }
 }
