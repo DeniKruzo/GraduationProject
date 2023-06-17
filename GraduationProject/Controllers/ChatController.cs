@@ -30,7 +30,7 @@ namespace GraduationProject.Controllers
             });
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Chat");
         }
 
         [HttpGet("{id:long}")]
@@ -40,6 +40,22 @@ namespace GraduationProject.Controllers
                 .Include(x => x.Messages)
                 .FirstOrDefault(x => x.Id == id);
             return View(chat);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMessage(long ChatId, string message)
+        {
+            var Message = new Message
+            {
+                ChatId = ChatId,
+                Text = message,
+                Name = User.Identity.Name,
+                TimeStamp = DateTime.Now
+            };
+
+            _context.Messages.Add(Message);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Chat","Chat",new {id=ChatId});
         }
     }
 }

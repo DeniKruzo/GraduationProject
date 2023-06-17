@@ -17,5 +17,7 @@ public class ApplicationUser : IdentityUser
     [PersonalData]
     [Column(TypeName = "nvarchar(100)")]
     public string LastName { get; set; }
+
+    
 }
 

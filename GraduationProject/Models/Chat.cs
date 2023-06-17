@@ -10,7 +10,7 @@ namespace GraduationProject.Models
 
         public ICollection<Message> Messages {get; set;}
 
-        public ICollection<ApplicationUser> Users { get; set;}
+        public ICollection<ChatUser> Users { get; set;}
 
         public ChatType Type { get; set;}
     }

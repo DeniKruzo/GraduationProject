@@ -13,7 +13,8 @@
         </div>
     }
 </div>
-<div class="chat-input">
-    <input type="text" />
-    <button>Отправить</button>
-</div>
+<form class ="chat-input" asp-contoller="Chat" asp-action="CreateMessage">
+    <input type="hidden" name="ChatId" value="@Model.Id" />
+    <input type="text" name="message"/>
+    <button type="submit">Отправить</button>
+</form>
