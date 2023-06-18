@@ -40,15 +40,13 @@ namespace GraduationProject.Controllers
                 Type = ChatType.Room,
             };
 
+            model.Users.Add(new ChatUser
+            {
+                UserId = _userManager.GetUserId(User).ToString(),
+                RoleInChat = UserRoleInChat.Admin
+            });
+
             _context.Add(model);
-
-            //model.Users.Add(new ChatUser
-            //{
-            //    UserId = _userManager.GetUserId(User).ToString(),
-            //    RoleInChat = UserRoleInChat.Admin
-            //});
-           
-
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Chat");
         }
@@ -80,15 +78,13 @@ namespace GraduationProject.Controllers
                 Type = ChatType.Private
             };
 
-            _context.Add(chat);
-
             var user1 = new ChatUser { UserId = userId };
             var user2 = new ChatUser { UserId = _userManager.GetUserId(User) };
 
-            //chat.Users.Add(user1);
-            //chat.Users.Add(user2);
+            chat.Users.Add(user1);
+            chat.Users.Add(user2);
 
-            
+            _context.Add(chat);
             await _context.SaveChangesAsync();
             return RedirectToAction("Chat", "Chat", new {id=chat.Id});
         }
