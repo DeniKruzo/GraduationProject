@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Security.Claims;
 
 namespace GraduationProject.Controllers
@@ -31,21 +32,22 @@ namespace GraduationProject.Controllers
             return View(chats);
         }
 
-        [HttpPost]
         public async Task<IActionResult> CreateRoom(string name)
         {
-            var chat = new Chat
+            var model = new Chat
             {
                 Name = name,
                 Type = ChatType.Room,
             };
 
-            chat.Users.Add(new ChatUser
-            {
-                UserId = _userManager.GetUserId(User),
-                RoleInChat = UserRoleInChat.Admin
-            });
-            _context.Chats.Add(chat);
+            _context.Add(model);
+
+            //model.Users.Add(new ChatUser
+            //{
+            //    UserId = _userManager.GetUserId(User).ToString(),
+            //    RoleInChat = UserRoleInChat.Admin
+            //});
+           
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Chat");
@@ -70,18 +72,25 @@ namespace GraduationProject.Controllers
             return View(chats);
         }
 
-        public async Task<IActionResult> CreatePrivateRoom(string userId)
+        public async Task<IActionResult> CreatePrivateRoom(string userId, string namesChat)
         {
             var chat = new Chat
             {
-                Type = ChatType.Private,
+                Name = namesChat,
+                Type = ChatType.Private
             };
-            chat.Users.Add(new ChatUser { UserId = userId });
-            chat.Users.Add(new ChatUser { UserId = _userManager.GetUserId(User) });
 
-            _context.Chats.Add(chat);
+            _context.Add(chat);
+
+            var user1 = new ChatUser { UserId = userId };
+            var user2 = new ChatUser { UserId = _userManager.GetUserId(User) };
+
+            //chat.Users.Add(user1);
+            //chat.Users.Add(user2);
+
+            
             await _context.SaveChangesAsync();
-            return RedirectToAction("Chat", "Chat", new {id=chat.Id });
+            return RedirectToAction("Chat", "Chat", new {id=chat.Id});
         }
 
         [HttpGet("{id:long}")]

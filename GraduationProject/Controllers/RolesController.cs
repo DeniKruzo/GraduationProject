@@ -6,7 +6,6 @@ using System.Data;
 
 namespace GraduationProject.Controllers
 {
-    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         private RoleManager<IdentityRole> _roleManager;
@@ -40,6 +39,5 @@ namespace GraduationProject.Controllers
             }
             return View(name);
         }
-
     }
 }

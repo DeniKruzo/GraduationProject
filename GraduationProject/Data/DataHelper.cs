@@ -5,12 +5,18 @@ using GraduationProject.mocks;
 using GraduationProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore;
-
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GraduationProject.Data
 {
     public class DataHelper
     {
+        private RoleManager<IdentityRole> _roleManager;
+        public DataHelper(RoleManager<IdentityRole> roleManager)
+        {
+            _roleManager = roleManager;
+        }
         /// <summary>
         /// Заполняем бд из локального репозитория (тестовы задания)
         /// </summary>

@@ -74,6 +74,7 @@
 
             var sendMessage=function(event){
                 event.preventDefault();
+
                 var data = new FormData(event.target);
                 document.getElementById('message-input').value = '';
                 axios.post('/Bridge/SendMessage',data)

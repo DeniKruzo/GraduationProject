@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Чатик";
     Layout = "~/Views/Shared/ChatLayout.cshtml";
-    //var userId = _userManager.;
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
  }
 
 
@@ -11,7 +11,7 @@
     @foreach (var chat in Model)
     {
         <a class="room-button" asp-controller="Chat" asp-action="Chat" asp-route-id="@chat.Id">
-            @chat.Users.FirstOrDefault()
+            Закрытый чат
         </a>
     }
 </div>
