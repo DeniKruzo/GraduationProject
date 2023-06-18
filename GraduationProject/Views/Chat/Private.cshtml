@@ -1,0 +1,17 @@
+﻿@using System.Security.Claims;
+@model IEnumerable<Chat>
+@{
+    ViewData["Title"] = "Чатик";
+    Layout = "~/Views/Shared/ChatLayout.cshtml";
+    //var userId = _userManager.;
+ }
+
+
+<div class="chat-body">
+    @foreach (var chat in Model)
+    {
+        <a class="room-button" asp-controller="Chat" asp-action="Chat" asp-route-id="@chat.Id">
+            @chat.Users.FirstOrDefault()
+        </a>
+    }
+</div>

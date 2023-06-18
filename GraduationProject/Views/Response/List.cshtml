@@ -16,7 +16,7 @@
         <p class="card-text">@item.Message</p>
       </div>
         <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <a href="https://localhost:7298/Home/About" type="button" class="btn btn-outline-dark">Начать Чат</a>
+            <a asp-controller="Chat" asp-action="Index" type="button" class="btn btn-outline-dark">Чат</a>
             @if (User.IsInRole("customer"))
             {
                 <a asp-area="" asp-controller="Comments" asp-action="Create" 

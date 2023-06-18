@@ -21,6 +21,14 @@ body {
     justify-content: space-between;
 }
 
+.navbar > a{
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding-top: 0.8rem;
+    padding-left: 1rem;
+}
+
 .main {
     flex-grow: 1;
     display: flex;

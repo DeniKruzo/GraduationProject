@@ -5,6 +5,10 @@ using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Abstract;
 using GraduationProject.mocks;
 using GraduationProject.Data.Repository;
+using Microsoft.AspNetCore.Routing.Patterns;
+using Microsoft.AspNetCore.SignalR;
+using GraduationProject.Controllers;
+using GraduationProject.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("GraduationDbContextConnection") ?? 
@@ -20,6 +24,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddSignalR();
+
 //подключаем репу через синглтон
 builder.Services.AddTransient<IAllOrders,OrderRepository>();
 builder.Services.AddTransient<IOrderCategory, CategoryOfOrderRepository>();
@@ -33,6 +39,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 
 app.UseHttpsRedirection();
@@ -40,12 +47,15 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();;
 app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
 
     endpoints.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+   endpoints.MapHub<ChatHub>("/chatHub");
 });
 app.MapRazorPages();
 

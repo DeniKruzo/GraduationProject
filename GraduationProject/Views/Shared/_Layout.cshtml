@@ -14,19 +14,20 @@
         <div >
             <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">YourFreelancer</a>
             <nav>
-                <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Chat" asp-action="Index">Чат</a>
                 @if (User.IsInRole("customer"))
                 {
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="AddNewOrder">Разместить задание</a>
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="MyOrdersList">Мои заказы</a>
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Profile" asp-action="List">Выбрать специалиста</a>
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Response" asp-action="List">Просмотреть отклики</a>
+                    <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Chat" asp-action="Index">Чат</a>
                 }
                 @if (User.IsInRole("specialist"))
                 {
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Profile" asp-action="Add">Анкета</a>
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Orders" asp-action="OrdersList">Выбрать Заказ</a>
                     <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Response" asp-action="List">Просмотреть отклики</a>
+                    <a type="button" class="btn btn-success btn-sm" asp-area="" asp-controller="Chat" asp-action="Index">Чат</a>
                 }
                 @if (User.IsInRole("admin"))
                 {

@@ -9,9 +9,8 @@
 </head>
 <body>
     <div class="navbar">
-        <a type="button"
-           style="color: white; font-weight: bold; font-weight: 800; font-size: 35px; text-decoration: none;"
-            asp-area="" asp-controller="Home" asp-action="Index"> НАЗАД </a>
+        <a type="button" asp-area="" asp-controller="Home" asp-action="Index"> НАЗАД </a>
+           
     </div>
    
     <div class="main">
@@ -37,6 +36,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts",false)
+    <script src="~/js/signalr.min.js" asp-append-version="true"></script>
+    @RenderSectionAsync("Scripts",required: false)
 </body>
 </html>
