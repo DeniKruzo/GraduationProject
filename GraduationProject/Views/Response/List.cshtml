@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GraduationProject.Data.Domains.Response>
+﻿@model UpdateResponseModel
 
 @{
     ViewData["Title"] = "Отклики";
@@ -6,13 +6,20 @@
 }
 
 <h1>Ваши отклики:
-    <span class="border-secondary">@Model.Count()</span>
+    <span class="border-secondary">@Model.Response.Count()</span>
 </h1>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Response) {
     <div class="card border-secondary mb-3" style="max-width: 18rem;">
-      <div class="card-header">Отклик</div>
-      <div class="card-body text-dark">
+        @if (User.IsInRole("customer"))
+        {
+            <div class="card-header">Отклик на @Model.openOrder.First(o => o.OrderId == item.ProfileOrOrderId).Name</div>
+        }
+        @if (User.IsInRole("specialist"))
+        {
+            <div class="card-header">Отклик на ваш профиль</div>
+        }
+        <div class="card-body text-dark">
         <p class="card-text">@item.Message</p>
       </div>
         <div class="btn-group" role="group" aria-label="Basic outlined example">

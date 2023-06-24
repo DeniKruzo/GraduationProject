@@ -50,7 +50,7 @@ namespace GraduationProject.Controllers
             }
             else
             {
-                return RedirectToAction("Edit", new { id = thisId });
+                return RedirectToAction("Bridge", new { id = thisId });
             }
             
         }
@@ -142,6 +142,14 @@ namespace GraduationProject.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("OrdersList", "Orders");
+        }
+
+        public IActionResult Bridge(string id)
+        {
+            var profile = _context.Profile
+               .FirstOrDefault(i => i.OwnerId == id);
+
+            return View(profile);
         }
     }
 }

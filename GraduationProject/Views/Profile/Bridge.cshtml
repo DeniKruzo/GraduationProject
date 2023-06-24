@@ -1,0 +1,35 @@
+﻿@using GraduationProject.Data.Domains;
+@model Profile
+
+@{
+    ViewData["Title"] = "Профиль";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Так выглядит ваша анкета (имя и специализация будут показаны заказчикам) :</h3>
+<hr/>
+<div class="profilecard">
+    <div class="card__top">
+        <a href="#" class="card__image">
+            <img src="/image/@Model.AvatarImg" alt="Name of Image" />
+        </a>
+    </div>
+    <!-- Нижняя часть -->
+    <div class="card__bottom">
+        <div class="card__prices">
+            <div class="card__price card__price--discount">Ваше имя</div>
+            <div class="card__price card__price--common fa-sharp fa-solid fa-star">
+                @Model.Rating (ваш рейтинг)
+            </div>
+        </div>
+        <div class="card__title">
+            Ваша Cпециализация 
+        </div>
+        <a asp-area="" asp-controller="Comments" asp-action="Index"
+           asp-route-id="@Model.ProfileId"
+           type="button" class="card__add" style="text-decoration: none">Мои отзывы</a>
+        <a asp-area="" asp-controller="Profile" asp-action="Edit"
+            asp-route-id="@Model.OwnerId"
+            type="button" class="card__add" style="text-decoration: none">РЕДАКТИРОВАТЬ</a>
+    </div>
+</div>

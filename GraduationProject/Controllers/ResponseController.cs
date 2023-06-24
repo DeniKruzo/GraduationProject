@@ -1,6 +1,7 @@
 ﻿using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Data;
 using GraduationProject.Data.Domains;
+using GraduationProject.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,20 +23,24 @@ namespace GraduationProject.Controllers
 
         public IActionResult List(long id)
         {
-            IQueryable<Response> data;
-         
-            data = context.Responses.Where(r => r.RecipientId == _userManager.GetUserId(User));
+            var model = new UpdateResponseModel
+            {
+                Response = context.Responses.Where(r => r.RecipientId == _userManager.GetUserId(User)),
+                openOrder = context.Orders,
+                
+            };
+
 
             if (id != 0)
             {
-                data = data.Where(d => d.ProfileOrOrderId == id);
+                model.Response = model.Response.Where(d => d.ProfileOrOrderId == id);
             }
 
 
-            if (!data.Any())
+            if (!model.Response.Any())
                 return RedirectToAction("About", "Home");
 
-            return View(data);
+            return View(model);
         }
 
         public ActionResult Create(int id, string recId)
